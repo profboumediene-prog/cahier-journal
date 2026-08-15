@@ -169,8 +169,7 @@ p{margin:0}
 .area{
   width:100%;border:0;outline:none;resize:none;background-color:transparent;color:var(--ink);
   font:500 9pt/4.6mm var(--body);padding:0 2px;
-  background-image:linear-gradient(180deg,transparent 0,transparent calc(4.6mm - 1px),var(--v100) calc(4.6mm - 1px),var(--v100) 4.6mm);
-  background-size:100% 4.6mm}
+  background-image:repeating-linear-gradient(180deg,transparent 0,transparent 4.4mm,var(--v100) 4.4mm,var(--v100) 4.6mm)}
 .area:focus{background-color:var(--v50)}
 .chk{display:inline-flex;align-items:center;gap:4px;font-size:8pt;font-weight:600;color:var(--v800);cursor:pointer;white-space:nowrap}
 .chk input{accent-color:var(--v600);width:11px;height:11px;margin:0;cursor:pointer}
@@ -267,7 +266,7 @@ table.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
   display:inline-flex;align-items:center;gap:8px;margin-top:4mm;padding:2mm 5mm;border-radius:999px;
   border:1px solid var(--v200);background:#fff;
   font-size:8.5pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--v700)}
-.eiffel{width:52mm;height:auto;color:var(--v700);display:block;margin:0 auto}
+.eiffel{width:52mm;height:85.8mm;color:var(--v700);display:block;margin:0 auto}
 .eiffel .glow{color:var(--gold)}
 .cover__art{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:6mm}
 .cover__art .halo{position:absolute;width:78mm;height:78mm;border-radius:50%;
@@ -289,8 +288,11 @@ table.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .legend b{color:var(--v700)}
 .sheet-tools{position:absolute;top:4mm;right:5mm;display:flex;gap:5px;z-index:5}
 .sheet-tools .btn{padding:5px 8px;font-size:10px}
+.sheet-tools .btn--pdf{background:linear-gradient(135deg,var(--v800),var(--v600));color:#fff;border-color:transparent}
+.sheet-tools .btn--pdf:hover{background:linear-gradient(135deg,var(--v900),var(--v700))}
 .toast{
   position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);opacity:0;
+  max-width:min(92vw,620px);text-align:center;line-height:1.45;
   background:var(--v900);color:#fff;padding:11px 18px;border-radius:11px;
   font:600 12px var(--body);box-shadow:0 16px 30px -16px rgba(0,0,0,.6);
   transition:opacity .22s ease,transform .22s ease;z-index:99;pointer-events:none}
@@ -319,6 +321,13 @@ body.exporting .sheet{
   page-break-before:always;break-before:page;page-break-inside:avoid;break-inside:avoid}
 body.exporting .sheet.is-first{page-break-before:auto;break-before:auto}
 body.exporting .line,body.exporting .area,body.exporting .cell{background-color:transparent!important}
+/* Repli : aucun dégradé, uniquement des aplats — capture toujours possible */
+body.exporting-flat *,body.exporting-flat *::before,body.exporting-flat *::after{background-image:none!important}
+body.exporting-flat .tbl thead th,body.exporting-flat .card__label,
+body.exporting-flat .cover__year,body.exporting-flat .planner .vslot{background-color:#4b3b8f!important;color:#fff!important}
+body.exporting-flat .sheet::after{background-color:#4b3b8f!important}
+body.exporting-flat .rowhead,body.exporting-flat .num,body.exporting-flat .pause td{background-color:#ece7fb!important}
+body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!important}
 .btn[disabled]{opacity:.55;cursor:progress}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -346,7 +355,6 @@ body.exporting .line,body.exporting .area,body.exporting .cell{background-color:
       <button class="btn btn--danger" type="button" onclick="clearAll()">Tout effacer</button>
       <button class="btn" type="button" onclick="printCurrent()">Imprimer cette page</button>
       <button class="btn" type="button" onclick="printAll()">Imprimer le cahier</button>
-      <button class="btn btn--primary" id="btn-pdf" type="button" onclick="exportPDF()">Télécharger en PDF</button>
     </div>
   </div>
   <nav class="tabs" aria-label="Navigation entre les pages">
@@ -364,7 +372,7 @@ body.exporting .line,body.exporting .area,body.exporting .cell{background-color:
     <button class="tab" type="button" data-tab="10" onclick="showPage(10)"><i>10</i> Planification</button>
     <button class="tab" type="button" data-tab="all" onclick="showPage('all')">Tout afficher</button>
   </nav>
-  <p class="hint"><b>Télécharger en PDF</b> génère un fichier de tout le cahier en un clic (connexion requise la première fois). Sinon, <b>Imprimer le cahier</b> : choisissez <b>A4</b>, marges <b>Aucune</b>, et cochez <b>Graphiques d'arrière-plan</b>. Les pages qui se dupliquent (cahier de textes, fiche de séance, liste des élèves, planification) portent un bouton <b>Dupliquer</b> en haut à droite. La saisie est conservée dans le navigateur.</p>
+  <p class="hint">Chaque page possède, en haut à droite, un bouton <b>PDF</b> pour la télécharger individuellement (connexion internet requise la première fois). Pour tout le cahier en une fois, utilisez <b>Imprimer le cahier</b> : choisissez <b>A4</b>, marges <b>Aucune</b>, et cochez <b>Graphiques d'arrière-plan</b>, puis « Enregistrer au format PDF ». Les pages qui se dupliquent (cahier de textes, fiche de séance, liste des élèves, planification) portent aussi un bouton <b>Dupliquer</b> en haut à droite. La saisie est conservée dans le navigateur.</p>
 </header>
 
 <main id="cahier">
@@ -386,7 +394,7 @@ body.exporting .line,body.exporting .area,body.exporting .cell{background-color:
 
   <div class="cover__art">
     <div class="halo" aria-hidden="true"></div>
-    <svg class="eiffel" viewBox="0 0 200 330" role="img" aria-label="Illustration de la Tour Eiffel">
+    <svg class="eiffel" width="200" height="330" viewBox="0 0 200 330" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration de la Tour Eiffel">
       <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
         <!-- antenne + sommet -->
         <line x1="100" y1="10" x2="100" y2="34"/>
@@ -1348,100 +1356,157 @@ body.exporting .line,body.exporting .area,body.exporting .cell{background-color:
     });
   }
 
-  // Récupère le constructeur jsPDF exposé par le bundle html2pdf.
-  function getJsPDF() {
-    if (window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
-    if (window.jsPDF) return window.jsPDF;
-    return null;
+  // --- dessins vectoriels ------------------------------------------------
+  // Le convertisseur PDF gère mal les <svg> intégrés (erreur « Unsupported
+  // image type »). On les transforme donc nous-mêmes en images PNG le temps
+  // de la conversion, puis on remet les dessins d'origine.
+  var svgSwaps = [];
+
+  function rasterizeSvg(svg) {
+    return new Promise(function (resolve, reject) {
+      var rect = svg.getBoundingClientRect();
+      var w = Math.max(1, Math.round(rect.width || svg.getAttribute('width') || 200));
+      var h = Math.max(1, Math.round(rect.height || svg.getAttribute('height') || 200));
+      var clone = svg.cloneNode(true);
+      clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      clone.setAttribute('width', w);
+      clone.setAttribute('height', h);
+      // « currentColor » est perdu hors du document : on fige les couleurs.
+      clone.style.color = window.getComputedStyle(svg).color;
+      var source = svg.querySelectorAll('[class]');
+      var target = clone.querySelectorAll('[class]');
+      for (var i = 0; i < target.length && i < source.length; i++) {
+        target[i].style.color = window.getComputedStyle(source[i]).color;
+      }
+      var xml = new XMLSerializer().serializeToString(clone);
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var c = document.createElement('canvas');
+          c.width = w * 3; c.height = h * 3;
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          resolve({ png: c.toDataURL('image/png'), w: w, h: h });
+        } catch (e) { reject(e); }
+      };
+      img.onerror = function () { reject(new Error('dessin illisible')); };
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(xml);
+    });
   }
 
-  // Capture une seule feuille A4 : un canvas par page = pas de canvas géant,
-  // pas de blocage du navigateur, pas de page coupée.
-  function renderSheet(el) {
-    return html2pdf().set({
+  function prepareGraphics(root) {
+    var list = [];
+    (root || document).querySelectorAll('svg').forEach(function (svg) { list.push(svg); });
+    return Promise.all(list.map(function (svg) {
+      return rasterizeSvg(svg).then(function (r) {
+        var img = document.createElement('img');
+        img.src = r.png;
+        img.className = svg.getAttribute('class') || '';
+        img.setAttribute('alt', svg.getAttribute('aria-label') || '');
+        svg.parentNode.insertBefore(img, svg);
+        svg.style.display = 'none';
+        svgSwaps.push({ svg: svg, img: img });
+      })['catch'](function (e) {
+        // Dessin non convertible : on le masque pour ne pas bloquer l'export.
+        console.warn('Dessin ignoré dans le PDF', e);
+        svg.style.display = 'none';
+        svgSwaps.push({ svg: svg, img: null });
+      });
+    }));
+  }
+
+  function restoreGraphics() {
+    svgSwaps.forEach(function (pair) {
+      pair.svg.style.display = '';
+      if (pair.img && pair.img.parentNode) pair.img.parentNode.removeChild(pair.img);
+    });
+    svgSwaps = [];
+  }
+
+  function pdfOptions(fichier) {
+    return {
       margin: 0,
-      image: { type: 'jpeg', quality: 0.95 },
+      filename: fichier,
+      image: { type: 'jpeg', quality: 0.92 },
       html2canvas: {
-        scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff',
-        scrollX: 0, scrollY: 0, imageTimeout: 0
+        scale: 1.8, useCORS: true, allowTaint: false, logging: false,
+        backgroundColor: '#ffffff', scrollX: 0, scrollY: 0, imageTimeout: 0
       },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
       pagebreak: { mode: 'avoid-all' }
-    }).from(el).toCanvas().get('canvas');
+    };
   }
 
-  window.exportPDF = function () {
-    var btn = byId('btn-pdf');
+  // Export d'une seule page (celle du bouton cliqué), via le pipeline
+  // intégré de html2pdf.js (html2canvas + jsPDF + téléchargement en un
+  // seul appel .save() — plus fiable que la manipulation manuelle de jsPDF).
+  window.downloadPageAsPDF = function (btn) {
+    var sheet = btn.closest('.sheet');
+    if (!sheet) return;
+    var label = btn.textContent;
+    var wasHidden = sheet.classList.contains('hidden');
 
-    function stop(message) {
+    function stop(message, longue) {
+      restoreGraphics();
       document.body.classList.remove('exporting');
-      if (btn) { btn.disabled = false; btn.textContent = 'Télécharger en PDF'; }
-      if (message) toast(message);
+      document.body.classList.remove('exporting-flat');
+      if (wasHidden) sheet.classList.add('hidden');
+      btn.disabled = false; btn.textContent = label;
+      if (message) toast(message, longue);
+    }
+    function fail(err) {
+      console.error('Export PDF —', err);
+      var detail = err && (err.message || err.name) ? ' (' + String(err.message || err.name).slice(0, 70) + ')' : '';
+      stop('Échec de la génération' + detail + '. Utilisez « Imprimer cette page » puis « Enregistrer au format PDF » : le résultat est même plus net.', true);
     }
 
     if (typeof html2pdf === 'undefined') {
-      toast('Générateur PDF non chargé (connexion ?) : utilisez « Imprimer le cahier » puis « Enregistrer au format PDF ».');
+      stop('Générateur PDF non chargé : vérifiez la connexion internet puis rechargez la page. Sinon, utilisez « Imprimer cette page ».', true);
       return;
     }
 
-    window.showPage('all');
+    if (wasHidden) sheet.classList.remove('hidden');
     markFirst();
-    syncFields(byId('cahier'));
+    sheet.classList.add('is-first');
+    syncFields(sheet);
     document.body.classList.add('exporting');
-    if (btn) { btn.disabled = true; btn.textContent = 'Génération…'; }
+    btn.disabled = true; btn.textContent = '…';
 
-    var sheets = [];
-    document.querySelectorAll('.sheet:not(.hidden)').forEach(function (el) { sheets.push(el); });
-    if (!sheets.length) { stop('Aucune page à exporter.'); return; }
-
+    var titre = (sheet.getAttribute('aria-label') || 'page').trim();
     var nom = (byId('c_ens') && byId('c_ens').value.trim()) || 'francais';
     var fichier = 'Cahier-journal-' +
-      nom.replace(/[^\w\u00C0-\u017F -]/g, '').replace(/\s+/g, '-') + '.pdf';
+      (nom + '-' + titre).replace(/[^\w\u00C0-\u017F -]/g, '').replace(/\s+/g, '-') + '.pdf';
 
-    var JsPDF = getJsPDF();
+    toast('Préparation du PDF…');
 
-    // Voie principale : on assemble nous-mêmes le PDF, une image par page A4.
-    if (JsPDF) {
-      var pdf = new JsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
-      var addSheet = function (i) {
-        if (i >= sheets.length) {
-          try { pdf.save(fichier); } catch (e) { stop('Téléchargement impossible : essayez « Imprimer le cahier ».'); return; }
-          stop('PDF téléchargé : ' + fichier);
-          return;
-        }
-        toast('Génération du PDF — page ' + (i + 1) + ' sur ' + sheets.length + '…');
-        renderSheet(sheets[i]).then(function (canvas) {
-          if (i > 0) pdf.addPage();
-          pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
-          canvas.width = 0; canvas.height = 0; // libère la mémoire
-          setTimeout(function () { addSheet(i + 1); }, 30);
-        })['catch'](function () {
-          stop('La page ' + (i + 1) + ' n\'a pas pu être convertie : utilisez « Imprimer le cahier » puis « Enregistrer au format PDF ».');
-        });
-      };
-      setTimeout(function () { addSheet(0); }, 120);
-      return;
-    }
-
-    // Voie de secours : chaînage html2pdf, page après page.
-    var opt = {
-      margin: 0,
-      filename: fichier,
-      image: { type: 'jpeg', quality: 0.95 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: 'avoid-all' }
-    };
-    var worker = html2pdf().set(opt).from(sheets[0]).toPdf();
-    sheets.slice(1).forEach(function (el) {
-      worker = worker.get('pdf').then(function (pdf) { pdf.addPage(); })
-        .set(opt).from(el).toContainer().toCanvas().toPdf();
-    });
-    worker.save().then(function () { stop('PDF téléchargé : ' + fichier); })
-      ['catch'](function () {
-        stop('La génération a échoué : utilisez « Imprimer le cahier » puis « Enregistrer au format PDF ».');
-      });
+    prepareGraphics(sheet)
+      .then(function () { return html2pdf().set(pdfOptions(fichier)).from(sheet).save(); })
+      .then(function () { stop('PDF téléchargé : ' + fichier + '.'); })
+      ['catch'](function (err1) {
+        console.warn('Nouvelle tentative en mode simplifié', err1);
+        document.body.classList.add('exporting-flat');
+        return html2pdf().set(pdfOptions(fichier)).from(sheet).save()
+          .then(function () { stop('PDF téléchargé : ' + fichier + '.'); });
+      })
+      ['catch'](function (err) { fail(err); });
   };
+
+  /* ---------- 4 ter. bouton PDF sur chaque page ---------- */
+  function pdfButtonHTML() {
+    return '<button class="btn btn--pdf" type="button" onclick="downloadPageAsPDF(this)" title="Télécharger cette page en PDF">⬇ PDF</button>';
+  }
+  function addPageToolbars() {
+    document.querySelectorAll('.sheet').forEach(function (sheet) {
+      var tools = sheet.querySelector('.sheet-tools');
+      if (!tools) {
+        tools = document.createElement('div');
+        tools.className = 'sheet-tools no-print';
+        sheet.insertBefore(tools, sheet.firstChild);
+      }
+      if (!tools.querySelector('.btn--pdf')) {
+        tools.insertAdjacentHTML('afterbegin', pdfButtonHTML());
+      }
+    });
+  }
 
   /* ---------- 5. duplication de page ---------- */
   var clones = 0;
@@ -1458,7 +1523,8 @@ body.exporting .line,body.exporting .area,body.exporting .cell{background-color:
       el.removeAttribute('data-manual');
     });
     var tools = copy.querySelector('.sheet-tools');
-    tools.innerHTML = '<button class="btn" type="button" onclick="duplicatePage(this)">＋ Dupliquer</button>' +
+    tools.innerHTML = pdfButtonHTML() +
+      '<button class="btn" type="button" onclick="duplicatePage(this)">＋ Dupliquer</button>' +
       '<button class="btn btn--danger" type="button" onclick="removePage(this)">Supprimer</button>';
     var group = document.querySelectorAll('[data-page="' + src.dataset.page + '"]');
     group[group.length - 1].after(copy);
@@ -1474,12 +1540,12 @@ body.exporting .line,body.exporting .area,body.exporting .cell{background-color:
 
   /* ---------- notifications ---------- */
   var toastTimer = null;
-  function toast(msg) {
+  function toast(msg, longue) {
     var t = byId('toast');
     t.textContent = msg;
     t.classList.add('is-on');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { t.classList.remove('is-on'); }, 2600);
+    toastTimer = setTimeout(function () { t.classList.remove('is-on'); }, longue ? 9000 : 2600);
   }
 
   /* ---------- exemple de remplissage ---------- */
@@ -1571,6 +1637,7 @@ body.exporting .line,body.exporting .area,body.exporting .cell{background-color:
   /* ---------- démarrage ---------- */
   restore();
   recalcAll();
+  addPageToolbars();
   window.addEventListener('beforeprint', markFirst);
 })();
 </script>
