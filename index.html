@@ -31,6 +31,8 @@
   --v50:#f6f3fe;
   --gold:#a8863a;
   --gold-soft:#e3d2a6;
+  --rose:#c98098;
+  --rose-soft:#f3dde3;
   --muted:#635f7d;
   --line:#ded6f4;
   --paper:#ffffff;
@@ -129,7 +131,17 @@ p{margin:0}
 .rule{display:flex;align-items:center;justify-content:center;gap:7px;margin:2.5mm 0 0}
 .rule span{height:1px;width:22mm;background:linear-gradient(90deg,transparent,var(--v300))}
 .rule span:last-child{background:linear-gradient(270deg,transparent,var(--v300))}
-.rule b{width:5px;height:5px;transform:rotate(45deg);background:var(--gold);display:block}
+.rule b{width:11px;height:11px;display:block;position:relative}
+.rule b::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 50% 22%, var(--rose) 0 3px, transparent 3.3px),
+    radial-gradient(circle at 78% 50%, var(--rose) 0 3px, transparent 3.3px),
+    radial-gradient(circle at 50% 78%, var(--rose) 0 3px, transparent 3.3px),
+    radial-gradient(circle at 22% 50%, var(--rose) 0 3px, transparent 3.3px)}
+.rule b::after{
+  content:"";position:absolute;left:50%;top:50%;width:3.4px;height:3.4px;border-radius:50%;
+  background:var(--gold);transform:translate(-50%,-50%)}
 
 /* ------------------------------ CARTES ------------------------------ */
 .card{
@@ -290,6 +302,19 @@ table.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .sheet-tools .btn{padding:5px 8px;font-size:10px}
 .sheet-tools .btn--pdf{background:linear-gradient(135deg,var(--v800),var(--v600));color:#fff;border-color:transparent}
 .sheet-tools .btn--pdf:hover{background:linear-gradient(135deg,var(--v900),var(--v700))}
+
+/* ------------------------------ TOUCHES FLORALES ------------------------------ */
+.bloom{position:absolute;pointer-events:none;z-index:0;opacity:.32}
+.bloom svg{width:100%;height:100%;display:block}
+.bloom--corner{width:20mm;height:20mm;right:3mm;bottom:11mm;transform:rotate(8deg)}
+.cover-bloom--bl,.cover-bloom--br{position:absolute;pointer-events:none;z-index:0}
+.cover-bloom--bl svg,.cover-bloom--br svg{width:100%;height:100%;display:block}
+.cover-bloom--bl{width:30mm;height:30mm;left:11mm;bottom:12mm}
+.cover-bloom--br{width:30mm;height:30mm;right:11mm;bottom:12mm;transform:scaleX(-1)}
+.cover-bloom--sl,.cover-bloom--sr{display:inline-block;width:13mm;height:13mm;opacity:.9}
+.cover-bloom--sl svg,.cover-bloom--sr svg{width:100%;height:100%;display:block}
+.cover-bloom--sr{transform:scaleX(-1)}
+.cover__script-row{display:flex;align-items:center;justify-content:center;gap:5mm;margin-top:2mm}
 .toast{
   position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);opacity:0;
   max-width:min(92vw,620px);text-align:center;line-height:1.45;
@@ -334,6 +359,49 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ico-fleur" viewBox="0 0 100 100">
+      <g fill="none" stroke="var(--v600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M50 94C48 68 46 44 50 22"/>
+        <path d="M50 56c-13-4-20 5-17 15"/>
+        <path d="M51 70c14-5 21 4 18 14"/>
+      </g>
+      <g transform="translate(50 20)">
+        <g fill="var(--rose)">
+          <ellipse cx="0" cy="-10" rx="6.6" ry="10.6"/>
+          <ellipse cx="9.6" cy="-3.1" rx="6.6" ry="10.6" transform="rotate(72 9.6 -3.1)"/>
+          <ellipse cx="5.9" cy="8.4" rx="6.6" ry="10.6" transform="rotate(144 5.9 8.4)"/>
+          <ellipse cx="-5.9" cy="8.4" rx="6.6" ry="10.6" transform="rotate(216 -5.9 8.4)"/>
+          <ellipse cx="-9.6" cy="-3.1" rx="6.6" ry="10.6" transform="rotate(288 -9.6 -3.1)"/>
+        </g>
+        <circle cx="0" cy="0" r="3.8" fill="var(--gold)"/>
+      </g>
+      <g transform="translate(33 62) scale(.55)" opacity=".92">
+        <g fill="var(--rose-soft)">
+          <ellipse cx="0" cy="-10" rx="6.6" ry="10.6"/>
+          <ellipse cx="9.6" cy="-3.1" rx="6.6" ry="10.6" transform="rotate(72 9.6 -3.1)"/>
+          <ellipse cx="5.9" cy="8.4" rx="6.6" ry="10.6" transform="rotate(144 5.9 8.4)"/>
+          <ellipse cx="-5.9" cy="8.4" rx="6.6" ry="10.6" transform="rotate(216 -5.9 8.4)"/>
+          <ellipse cx="-9.6" cy="-3.1" rx="6.6" ry="10.6" transform="rotate(288 -9.6 -3.1)"/>
+        </g>
+        <circle cx="0" cy="0" r="3.8" fill="var(--gold)"/>
+      </g>
+    </symbol>
+    <symbol id="ico-fleur-mini" viewBox="0 0 40 40">
+      <g transform="translate(20 20)">
+        <g fill="var(--rose)">
+          <ellipse cx="0" cy="-8" rx="5.2" ry="8.4"/>
+          <ellipse cx="7.6" cy="-2.5" rx="5.2" ry="8.4" transform="rotate(72 7.6 -2.5)"/>
+          <ellipse cx="4.7" cy="6.6" rx="5.2" ry="8.4" transform="rotate(144 4.7 6.6)"/>
+          <ellipse cx="-4.7" cy="6.6" rx="5.2" ry="8.4" transform="rotate(216 -4.7 6.6)"/>
+          <ellipse cx="-7.6" cy="-2.5" rx="5.2" ry="8.4" transform="rotate(288 -7.6 -2.5)"/>
+        </g>
+        <circle cx="0" cy="0" r="3" fill="var(--gold)"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
 
 <!-- ===================== BARRE D'OUTILS (non imprimée) ===================== -->
 <header class="toolbar no-print">
@@ -380,6 +448,8 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
 <!-- ============================== PAGE 0 · GARDE ============================== -->
 <section class="sheet cover" id="page-0" data-page="0" aria-label="Page de garde">
   <div class="cover__frame" aria-hidden="true"></div>
+  <div class="cover-bloom--bl" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#ico-fleur"></use></svg></div>
+  <div class="cover-bloom--br" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#ico-fleur"></use></svg></div>
 
   <div>
     <p class="cover__rep">République algérienne démocratique et populaire</p>
@@ -388,7 +458,11 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
 
   <div>
     <h1 class="cover__title">Cahier <span>journal</span></h1>
-    <p class="cover__script">Langue française</p>
+    <div class="cover__script-row">
+      <span class="cover-bloom--sl" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#ico-fleur-mini"></use></svg></span>
+      <p class="cover__script">Langue française</p>
+      <span class="cover-bloom--sr" aria-hidden="true"><svg viewBox="0 0 40 40"><use href="#ico-fleur-mini"></use></svg></span>
+    </div>
     <p class="cover__kicker">Enseignement secondaire · 1AS · 2AS · 3AS</p>
   </div>
 
@@ -1490,7 +1564,17 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
       ['catch'](function (err) { fail(err); });
   };
 
-  /* ---------- 4 ter. bouton PDF sur chaque page ---------- */
+  /* ---------- 4 quater. filigrane floral sur chaque page ---------- */
+  function bloomHTML() {
+    return '<div class="bloom bloom--corner" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#ico-fleur"></use></svg></div>';
+  }
+  function addFloralAccents() {
+    document.querySelectorAll('.sheet:not(.cover)').forEach(function (sheet) {
+      if (!sheet.querySelector('.bloom--corner')) {
+        sheet.insertAdjacentHTML('beforeend', bloomHTML());
+      }
+    });
+  }
   function pdfButtonHTML() {
     return '<button class="btn btn--pdf" type="button" onclick="downloadPageAsPDF(this)" title="Télécharger cette page en PDF">⬇ PDF</button>';
   }
@@ -1638,6 +1722,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
   restore();
   recalcAll();
   addPageToolbars();
+  addFloralAccents();
   window.addEventListener('beforeprint', markFirst);
 })();
 </script>
