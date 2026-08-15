@@ -1,12 +1,126 @@
-<!-- ... existing code ... -->
-        /* Custom Input Dotted Underlines */
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cahier Journal de l'Enseignant(e) de Français</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- html2pdf.js Bundle CDN for high-fidelity PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        theme: {
+                            50: '#f0f7ff',
+                            100: '#e0f0fe',
+                            200: '#bae0fd',
+                            300: '#7cc8fb',
+                            400: '#36a9f7',
+                            500: '#0c8de4',
+                            600: '#026fc2',
+                            700: '#03589f',
+                            800: '#074b83',
+                            900: '#0c3f6e',
+                            950: '#082849',
+                        },
+                        lavender: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        cursive: ['"Alex Brush"', 'cursive'],
+                        sans: ['Montserrat', 'sans-serif'],
+                        serifTitle: ['"Playfair Display"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Custom Styles for A4 Layout & Print / PDF Export */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print, #toast-container, #confirm-modal {
+                display: none !important;
+            }
+            .a4-page {
+                box-shadow: none !important;
+                border: none !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                max-width: 210mm !important;
+                max-height: 297mm !important;
+                padding: 8mm !important;
+                margin: 0 auto !important;
+                background: white !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                break-after: page !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+            }
+            .a4-page.hidden {
+                display: none !important;
+            }
+            input, textarea {
+                border-bottom: 1px dotted #03589f !important;
+                background: transparent !important;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+        }
+
+        .a4-page {
+            box-sizing: border-box !important;
+            width: 210mm !important;
+            height: 297mm !important;
+            max-width: 210mm !important;
+            max-height: 297mm !important;
+            overflow: hidden !important;
+            page-break-after: always !important;
+            break-after: page !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+
+        /* Custom Input Fields with Dotted Underlines */
         .dot-input {
             border: none;
             border-bottom: 1px dotted #36a9f7;
             background: transparent;
             outline: none;
             width: 100%;
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
             font-family: 'Montserrat', sans-serif;
             font-weight: 500;
             color: #0c3f6e;
@@ -14,15 +128,27 @@
         }
         .dot-input:focus {
             border-bottom: 1.5px solid #026fc2;
-            background-color: rgba(240, 247, 255, 0.4);
+            background-color: rgba(240, 247, 255, 0.5);
         }
 
-        /* Container badges positioning */
+        .dot-textarea {
+            border: none;
+            background-image: linear-gradient(to bottom, transparent 95%, #36a9f7 95%);
+            background-size: 100% 1.25rem;
+            line-height: 1.25rem;
+            outline: none;
+            width: 100%;
+            resize: none;
+            font-family: 'Montserrat', sans-serif;
+            color: #0c3f6e;
+        }
+
+        /* Container badges & frames */
         .section-box {
             position: relative;
             border: 2px solid #7cc8fb;
-            border-radius: 0.85rem;
-            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(4px);
         }
 
@@ -32,10 +158,10 @@
             left: 16px;
             background: linear-gradient(135deg, #03589f 0%, #026fc2 100%);
             color: white;
-            padding: 2px 14px;
+            padding: 3px 14px;
             border-radius: 9999px;
             font-weight: 700;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             letter-spacing: 0.03em;
             display: flex;
             align-items: center;
@@ -43,43 +169,294 @@
             box-shadow: 0 3px 5px -1px rgba(3, 88, 159, 0.25);
         }
 
-        /* Watermark Background pattern */
         .bg-floral-watermark {
             background-image: radial-gradient(#bae0fd 0.75px, transparent 0.75px);
             background-size: 16px 16px;
         }
-<!-- ... existing code ... -->
-        <!-- ==========================================
-             PAGE 2 : INFORMATIONS PERSONNELLES ET PRO
-             ========================================== -->
-        <div class="a4-page relative bg-white w-[210mm] h-[297mm] mx-auto p-6 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark flex flex-col justify-between" data-page="1">
 
-            <!-- Top Decorative Floral Header -->
-            <div class="relative text-center pt-1 mb-2">
-                
-                <!-- Floral Header Banner SVG Art -->
-                <div class="w-full flex justify-center mb-1">
-                    <svg width="100%" height="45" viewBox="0 0 600 45" fill="none" xmlns="http://www.w3.org/2000/svg" class="max-w-lg">
-                        <!-- Central floral frame -->
-                        <path d="M 200 25 Q 300 40 400 25" stroke="#7cc8fb" stroke-width="1.5" stroke-dasharray="4 4" fill="none"/>
-                        <path d="M 220 30 Q 300 45 380 30" stroke="#36a9f7" stroke-width="1" fill="none"/>
-                        
-                        <!-- Left Blue Leaves/Flowers -->
-                        <g transform="translate(140, 10)">
-                            <path d="M0 15 Q-15 0 -30 8 Q-15 20 0 15 Z" fill="#7cc8fb" opacity="0.7"/>
-                            <path d="M-8 10 Q-25 -8 -38 0 Q-22 10 -8 10 Z" fill="#026fc2" opacity="0.6"/>
-                            <circle cx="-25" cy="4" r="3" fill="#03589f"/>
-                        </g>
-                        
-                        <!-- Right Blue Leaves/Flowers -->
-                        <g transform="translate(460, 10) scale(-1, 1)">
-                            <path d="M0 15 Q-15 0 -30 8 Q-15 20 0 15 Z" fill="#7cc8fb" opacity="0.7"/>
-                            <path d="M-8 10 Q-25 -8 -38 0 Q-22 10 -8 10 Z" fill="#026fc2" opacity="0.6"/>
-                            <circle cx="-25" cy="4" r="3" fill="#03589f"/>
-                        </g>
+        /* Tab buttons highlight */
+        .tab-btn.active {
+            background: linear-gradient(135deg, #03589f 0%, #026fc2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(2, 111, 194, 0.3);
+        }
 
-                        <!-- Top Center Butterfly SVG -->
-                        <g transform="translate(290, 2) scale(0.55)">
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 10px;
+            font-weight: 700;
+            border: 1px solid;
+        }
+
+        /* Custom Checkbox Label */
+        .check-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .check-label input[type="checkbox"] {
+            accent-color: #03589f;
+            width: 12px;
+            height: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen py-6 text-slate-800 font-sans antialiased relative">
+
+    <div class="no-print max-w-6xl mx-auto mb-6 px-4">
+        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-blue-100 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-md shadow-blue-200">
+                        <i class="fa-solid fa-book-open text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-slate-800 text-lg leading-tight flex items-center gap-2">
+                            Cahier Journal — Enseignant(e) de Français
+                            <span class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full tracking-wider shadow-sm">
+                                14 Pages Imprimables
+                            </span>
+                        </h1>
+                        <p class="text-xs text-slate-500">Page de Garde + Fiche de Préparation + 12 Pages Didactiques — Spécial Français</p>
+                    </div>
+                </div>
+
+                <!-- Control Buttons -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="fillFrenchSecondaryDemo()" class="px-3 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 shadow-md shadow-purple-200 transition flex items-center gap-1.5" title="Préremplir avec un modèle complet Français (1AS/2AS/3AS)">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Modèle 1AS/2AS/3AS
+                    </button>
+                    <button onclick="saveToLocalStorage()" class="px-2.5 py-2 text-xs font-semibold rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition flex items-center gap-1 border border-emerald-200" title="Enregistrer localement">
+                        <i class="fa-solid fa-floppy-disk text-emerald-600"></i> Sauvegarder
+                    </button>
+                    <button onclick="clearAllForms()" class="px-2.5 py-2 text-xs font-semibold rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-100 transition flex items-center gap-1 border border-rose-200" title="Effacer tous les champs">
+                        <i class="fa-solid fa-trash-can text-rose-600"></i> Vider
+                    </button>
+                    
+                    <!-- PDF Export Buttons -->
+                    <button onclick="exportPagePDF()" class="px-3 py-2 text-xs font-bold rounded-xl bg-rose-600 text-white hover:bg-rose-700 shadow-md shadow-rose-200 transition flex items-center gap-1.5" title="Télécharger la page active au format PDF">
+                        <i class="fa-solid fa-file-pdf"></i> PDF Page
+                    </button>
+                    <button onclick="exportAllPDF()" class="px-3 py-2 text-xs font-bold rounded-xl bg-rose-800 text-white hover:bg-rose-900 shadow-md transition flex items-center gap-1.5" title="Télécharger le cahier complet (14 pages) en un seul fichier PDF">
+                        <i class="fa-solid fa-file-pdf"></i> PDF Tout (14 P)
+                    </button>
+
+                    <!-- Native Print Options -->
+                    <button onclick="printCurrentPage()" class="px-3 py-2 text-xs font-bold rounded-xl bg-theme-600 text-white hover:bg-theme-700 shadow-md shadow-blue-200 transition flex items-center gap-1.5" title="Imprimer la page visible">
+                        <i class="fa-solid fa-print"></i> Imprimer Page
+                    </button>
+                    <button onclick="printAllPages()" class="px-3 py-2 text-xs font-bold rounded-xl bg-slate-800 text-white hover:bg-slate-900 shadow-md transition flex items-center gap-1.5" title="Imprimer tout le cahier">
+                        <i class="fa-solid fa-print"></i> Imprimer Tout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Page Navigation Tabs (14 Pages: Garde + 13 Pages) -->
+            <div class="flex flex-wrap items-center gap-1.5 pt-1 text-xs font-medium">
+                <span class="text-slate-400 font-semibold mr-1"><i class="fa-solid fa-layer-group"></i> Pages :</span>
+                <button onclick="switchTab(0)" id="tab-0" class="tab-btn active px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1 font-bold text-purple-700">
+                    <span class="w-4 h-4 rounded-full bg-purple-200 text-purple-900 flex items-center justify-center text-[10px] font-bold">G</span> Garde
+                </button>
+                <button onclick="switchTab(1)" id="tab-1" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">1</span> Infos
+                </button>
+                <button onclick="switchTab(2)" id="tab-2" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">2</span> Emploi (Grille)
+                </button>
+                <button onclick="switchTab(3)" id="tab-3" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">3</span> Emploi (Tableau)
+                </button>
+                <button onclick="switchTab(4)" id="tab-4" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">4</span> Vacances
+                </button>
+                <button onclick="switchTab(5)" id="tab-5" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">5</span> Séminaires
+                </button>
+                <button onclick="switchTab(6)" id="tab-6" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">6</span> Travail à effectuer
+                </button>
+                <button onclick="switchTab(7)" id="tab-7" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1 font-bold text-blue-700">
+                    <span class="w-4 h-4 rounded-full bg-blue-200 text-blue-900 flex items-center justify-center text-[10px] font-bold">7</span> Fiche Prépa
+                </button>
+                <button onclick="switchTab(8)" id="tab-8" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">8</span> Élèves en difficulté
+                </button>
+                <button onclick="switchTab(9)" id="tab-9" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">9</span> Progression
+                </button>
+                <button onclick="switchTab(10)" id="tab-10" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">10</span> Œuvres
+                </button>
+                <button onclick="switchTab(11)" id="tab-11" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">11</span> Grilles
+                </button>
+                <button onclick="switchTab(12)" id="tab-12" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">12</span> Banque d'Erreurs
+                </button>
+                <button onclick="switchTab(13)" id="tab-13" class="tab-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                    <span class="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center text-[10px] font-bold">13</span> Oral
+                </button>
+                <button onclick="switchTab('all')" id="tab-all" class="tab-btn px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition flex items-center gap-1 font-semibold ml-auto">
+                    <i class="fa-solid fa-eye"></i> Voir Tout (14 P)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CAHIER CONTAINER -->
+    <div id="cahier-container" class="space-y-8">
+
+        <!-- PAGE 0: PAGE DE GARDE -->
+        <div id="page-0" class="a4-page active-page relative bg-gradient-to-b from-purple-50/60 via-white to-purple-50/80 w-[210mm] min-h-[297mm] mx-auto p-10 rounded-2xl shadow-2xl border-4 border-purple-200 overflow-hidden flex flex-col justify-between">
+            
+            <!-- Floral Frame Outer Border Decorative SVGs -->
+            <div class="absolute top-0 left-0 right-0 h-40 pointer-events-none opacity-90">
+                <svg width="100%" height="160" viewBox="0 0 800 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="translate(10, 10)">
+                        <circle cx="30" cy="30" r="22" fill="#c4b5fd" opacity="0.5"/>
+                        <circle cx="45" cy="40" r="16" fill="#a78bfa" opacity="0.6"/>
+                        <circle cx="20" cy="50" r="14" fill="#8b5cf6" opacity="0.4"/>
+                        <path d="M5 20 C20 5, 50 10, 60 30 C50 50, 20 45, 5 20 Z" fill="#7c3aed" opacity="0.3"/>
+                        <circle cx="80" cy="25" r="8" fill="#ddd6fe"/>
+                        <circle cx="100" cy="40" r="5" fill="#c4b5fd"/>
+                    </g>
+                    <g transform="translate(620, -10)">
+                        <circle cx="100" cy="60" r="45" fill="#c4b5fd" opacity="0.5"/>
+                        <circle cx="80" cy="80" r="35" fill="#a78bfa" opacity="0.6"/>
+                        <circle cx="120" cy="90" r="28" fill="#8b5cf6" opacity="0.4"/>
+                        <circle cx="60" cy="40" r="20" fill="#ddd6fe"/>
+                        <path d="M40 90 C30 70, 50 40, 80 50" stroke="#6d28d9" stroke-width="2" fill="none"/>
+                        <circle cx="100" cy="60" r="10" fill="#f59e0b" opacity="0.8"/>
+                        <circle cx="80" cy="80" r="8" fill="#fbbf24" opacity="0.8"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Page Header Text -->
+            <div class="text-center pt-8 z-10 relative">
+                <h3 class="font-sans font-semibold text-sm md:text-base text-slate-700 tracking-wide uppercase mb-1">
+                    République algérienne démocratique et populaire
+                </h3>
+                <h4 class="font-sans font-medium text-xs md:text-sm text-purple-900 tracking-normal mb-8">
+                    Ministère de l'Éducation nationale
+                </h4>
+
+                <div class="my-10 py-4">
+                    <h1 class="font-serifTitle text-6xl md:text-7xl font-bold text-slate-800 tracking-tight leading-tight drop-shadow-sm">
+                        Cahier
+                    </h1>
+                    <h2 class="font-serifTitle text-6xl md:text-7xl font-bold text-slate-800 tracking-tight leading-tight -mt-2 drop-shadow-sm">
+                        journal
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Central Floral & Still Life Illustration Art -->
+            <div class="my-auto py-6 flex justify-center items-center relative z-10">
+                <svg width="460" height="260" viewBox="0 0 460 260" fill="none" xmlns="http://www.w3.org/2000/svg" class="max-w-full drop-shadow-md">
+                    <g opacity="0.85">
+                        <circle cx="90" cy="150" r="42" fill="#c4b5fd" opacity="0.6"/>
+                        <circle cx="70" cy="120" r="30" fill="#a78bfa" opacity="0.7"/>
+                        <circle cx="110" cy="180" r="36" fill="#8b5cf6" opacity="0.5"/>
+                        <circle cx="130" cy="130" r="22" fill="#ffffff"/>
+                        <circle cx="130" cy="130" r="8" fill="#fbbf24"/>
+                        <path d="M40 180 C30 140, 20 100, 25 70" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+                        <circle cx="25" cy="70" r="4" fill="#a78bfa"/>
+                        <circle cx="23" cy="80" r="4.5" fill="#8b5cf6"/>
+                        <circle cx="27" cy="90" r="5" fill="#7c3aed"/>
+                        <circle cx="29" cy="100" r="5" fill="#6d28d9"/>
+                    </g>
+                    <g transform="translate(100, 110)">
+                        <rect x="0" y="50" width="160" height="26" rx="4" fill="#8b5cf6"/>
+                        <rect x="150" y="53" width="8" height="20" rx="1" fill="#f3f4f6"/>
+                        <rect x="10" y="26" width="145" height="24" rx="4" fill="#c4b5fd"/>
+                        <rect x="148" y="29" width="5" height="18" rx="1" fill="#f3f4f6"/>
+                        <rect x="20" y="4" width="130" height="22" rx="4" fill="#ddd6fe"/>
+                        <rect x="142" y="7" width="6" height="16" rx="1" fill="#f3f4f6"/>
+                        <rect x="80" y="4" width="14" height="72" fill="#7c3aed" opacity="0.9"/>
+                        <path d="M87 4 C70 -10, 60 5, 87 4 C100 -10, 110 5, 87 4 Z" fill="#6d28d9"/>
+                    </g>
+                    <g transform="translate(230, 150)">
+                        <ellipse cx="40" cy="32" rx="36" ry="10" fill="#e5e7eb" stroke="#c4b5fd" stroke-width="2"/>
+                        <ellipse cx="40" cy="30" rx="28" ry="7" fill="#ffffff"/>
+                        <path d="M18 10 C18 30, 25 32, 40 32 C55 32, 62 30, 62 10 Z" fill="#ffffff" stroke="#c4b5fd" stroke-width="2"/>
+                        <ellipse cx="40" cy="10" rx="22" ry="6" fill="#f3f4f6" stroke="#c4b5fd" stroke-width="1.5"/>
+                        <ellipse cx="40" cy="11" rx="18" ry="4.5" fill="#78350f"/>
+                        <path d="M62 14 C72 14, 72 26, 60 26" stroke="#c4b5fd" stroke-width="2.5" fill="none"/>
+                    </g>
+                    <g transform="translate(240, 175)">
+                        <path d="M10 30 Q 80 15, 150 25 L 150 65 Q 80 55, 10 70 Z" fill="#ffffff" stroke="#ddd6fe" stroke-width="2"/>
+                        <path d="M150 25 Q 220 15, 290 30 L 290 70 Q 220 55, 150 65 Z" fill="#fafafa" stroke="#ddd6fe" stroke-width="2"/>
+                        <line x1="150" y1="25" x2="150" y2="65" stroke="#a78bfa" stroke-width="2"/>
+                        <line x1="165" y1="35" x2="270" y2="42" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3"/>
+                        <line x1="165" y1="47" x2="265" y2="54" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3"/>
+                        <g transform="translate(200, 30) rotate(-25)">
+                            <rect x="0" y="0" width="90" height="5" rx="2" fill="#7c3aed"/>
+                            <polygon points="90,0 100,2.5 90,5" fill="#4c1d95"/>
+                            <rect x="10" y="0" width="8" height="5" fill="#fbbf24"/>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Bottom Information Fields -->
+            <div class="z-10 relative max-w-lg mx-auto w-full pb-8 space-y-6">
+                <div class="flex items-center gap-3">
+                    <label class="font-sans font-semibold text-slate-800 text-base md:text-lg whitespace-nowrap">Enseignante :</label>
+                    <input type="text" id="p0_enseignante" class="dot-input text-lg font-bold text-purple-900 border-purple-400 focus:border-purple-700 text-left px-2">
+                </div>
+
+                <div class="text-center pt-2">
+                    <p class="font-sans font-semibold text-slate-800 text-base md:text-lg">
+                        Année scolaire : <input type="text" id="p0_annee_scolaire" value="2026 - 2027" class="dot-input inline-block w-36 text-center font-bold text-purple-900 border-purple-400">
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bottom Floral Corner Decoration SVG -->
+            <div class="absolute bottom-0 left-0 right-0 h-24 pointer-events-none opacity-80 flex justify-between items-end">
+                <svg width="200" height="100" viewBox="0 0 200 100" fill="none">
+                    <circle cx="30" cy="90" r="35" fill="#c4b5fd" opacity="0.4"/>
+                    <circle cx="60" cy="100" r="25" fill="#8b5cf6" opacity="0.3"/>
+                    <path d="M0 100 Q40 50 90 90" stroke="#7c3aed" stroke-width="1.5" fill="none"/>
+                </svg>
+                <svg width="200" height="100" viewBox="0 0 200 100" fill="none" class="transform scale-x-[-1]">
+                    <circle cx="30" cy="90" r="35" fill="#c4b5fd" opacity="0.4"/>
+                    <circle cx="60" cy="100" r="25" fill="#8b5cf6" opacity="0.3"/>
+                    <path d="M0 100 Q40 50 90 90" stroke="#7c3aed" stroke-width="1.5" fill="none"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- PAGE 1: INFORMATIONS PERSONNELLES ET PROFESSIONNELLES -->
+        <div id="page-1" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative mb-6 text-center pt-2">
+                <div class="w-full flex justify-center mb-2">
+                    <svg width="100%" height="65" viewBox="0 0 600 65" fill="none" xmlns="http://www.w3.org/2000/svg" class="max-w-xl">
+                        <path d="M 200 35 Q 300 60 400 35" stroke="#7cc8fb" stroke-width="1.5" stroke-dasharray="4 4" fill="none"/>
+                        <path d="M 220 40 Q 300 65 380 40" stroke="#36a9f7" stroke-width="1" fill="none"/>
+                        <g transform="translate(140, 15)">
+                            <path d="M0 20 Q-20 0 -40 10 Q-20 25 0 20 Z" fill="#7cc8fb" opacity="0.7"/>
+                            <path d="M-10 15 Q-35 -10 -50 0 Q-30 15 -10 15 Z" fill="#026fc2" opacity="0.6"/>
+                            <circle cx="-35" cy="5" r="4" fill="#03589f"/>
+                            <circle cx="-20" cy="-5" r="3" fill="#36a9f7"/>
+                            <path d="M-5 22 C-20 30, -35 25, -45 35" stroke="#03589f" stroke-width="1.5" stroke-linecap="round"/>
+                        </g>
+                        <g transform="translate(460, 15) scale(-1, 1)">
+                            <path d="M0 20 Q-20 0 -40 10 Q-20 25 0 20 Z" fill="#7cc8fb" opacity="0.7"/>
+                            <path d="M-10 15 Q-35 -10 -50 0 Q-30 15 -10 15 Z" fill="#026fc2" opacity="0.6"/>
+                            <circle cx="-35" cy="5" r="4" fill="#03589f"/>
+                            <circle cx="-20" cy="-5" r="3" fill="#36a9f7"/>
+                            <path d="M-5 22 C-20 30, -35 25, -45 35" stroke="#03589f" stroke-width="1.5" stroke-linecap="round"/>
+                        </g>
+                        <g transform="translate(288, 0) scale(0.65)">
                             <path d="M12 12 C5 2, 0 10, 8 18 C0 22, 2 32, 12 24 C22 32, 24 22, 16 18 C24 10, 19 2, 12 12 Z" fill="#026fc2" opacity="0.85"/>
                             <path d="M12 12 C8 5, 4 10, 9 15 C4 18, 5 24, 12 20 C19 24, 20 18, 15 15 C20 10, 16 5, 12 12 Z" fill="#7cc8fb"/>
                             <line x1="12" y1="8" x2="12" y2="24" stroke="#074b83" stroke-width="1.5"/>
@@ -87,335 +464,1442 @@
                     </svg>
                 </div>
 
-                <!-- Page Titles -->
-                <h1 class="font-heading font-bold text-xl md:text-2xl text-theme-900 tracking-wider uppercase leading-tight">
+                <h1 class="font-heading font-bold text-2xl md:text-3xl text-theme-900 tracking-wider uppercase mb-1">
                     INFORMATIONS
                 </h1>
-                <p class="font-cursive text-2xl md:text-3xl text-theme-700 -mt-1">
+                <p class="font-cursive text-3xl md:text-4xl text-theme-700 -mt-2">
                     Personnelles et Professionnelles
                 </p>
-
-                <!-- Decorative Center Divider -->
-                <div class="flex items-center justify-center gap-2 mt-1">
-                    <span class="w-10 h-[1px] bg-gradient-to-r from-transparent to-theme-300"></span>
-                    <i class="fa-solid fa-heart text-theme-500 text-[10px]"></i>
-                    <span class="w-10 h-[1px] bg-gradient-to-l from-transparent to-theme-300"></span>
+                <div class="flex items-center justify-center gap-3 mt-1">
+                    <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-theme-300"></span>
+                    <i class="fa-solid fa-heart text-theme-500 text-xs"></i>
+                    <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-theme-300"></span>
                 </div>
             </div>
 
-            <!-- Main Content Layout (Two Columns for Section 1 and Section 2) -->
-            <div class="grid grid-cols-12 gap-4 mb-3">
-
-                <!-- 1. INFORMATIONS PERSONNELLES (Left Column - 5 cols width) -->
-                <div class="col-span-5 section-box p-3 pt-5 flex flex-col justify-between">
-                    <!-- Section Badge -->
+            <!-- Page 1 Grid -->
+            <div class="grid grid-cols-12 gap-5 mb-5">
+                <!-- Section 1 Centered Vertically -->
+                <div class="col-span-5 section-box p-4 pt-6 flex flex-col justify-center min-h-[360px]">
                     <div class="section-badge">
-                        <i class="fa-solid fa-user text-[10px]"></i>
+                        <i class="fa-solid fa-user text-xs"></i>
                         <span>1. INFORMATIONS PERSONNELLES</span>
                     </div>
 
-                    <!-- Form Fields -->
-                    <div class="space-y-2 text-[11px] my-auto">
+                    <div class="space-y-4 text-xs my-auto py-2">
                         <div>
                             <label class="block font-semibold text-theme-900 mb-0.5">Nom et prénom :</label>
-                            <input type="text" id="nom_prenom" class="dot-input" placeholder="...">
+                            <input type="text" id="p1_nom_prenom" class="dot-input">
                         </div>
-
                         <div>
                             <label class="block font-semibold text-theme-900 mb-0.5">Date de naissance :</label>
-                            <input type="text" id="date_naissance" class="dot-input" placeholder="...">
+                            <input type="text" id="p1_date_naissance" class="dot-input">
                         </div>
-
                         <div>
                             <label class="block font-semibold text-theme-900 mb-0.5">Adresse :</label>
-                            <input type="text" id="adresse_1" class="dot-input mb-1" placeholder="...">
-                            <input type="text" id="adresse_2" class="dot-input" placeholder="...">
+                            <input type="text" id="p1_adresse_1" class="dot-input mb-1.5">
+                            <input type="text" id="p1_adresse_2" class="dot-input">
                         </div>
-
-                        <div>
+                        <div class="pt-1">
                             <label class="block font-semibold text-theme-900 mb-0.5">Téléphone :</label>
-                            <input type="text" id="telephone" class="dot-input" placeholder="...">
+                            <input type="text" id="p1_telephone" class="dot-input">
                         </div>
-
                         <div>
                             <label class="block font-semibold text-theme-900 mb-0.5">Adresse électronique :</label>
-                            <input type="email" id="email" class="dot-input" placeholder="...">
+                            <input type="email" id="p1_email" class="dot-input">
                         </div>
-                    </div>
-
-                    <!-- Small Floral Ornament SVG in Corner -->
-                    <div class="absolute bottom-1 right-1 opacity-30 pointer-events-none">
-                        <svg width="35" height="35" viewBox="0 0 50 50" fill="none">
-                            <path d="M10 40 Q25 35 40 10 Q35 25 10 40 Z" fill="#36a9f7"/>
-                            <path d="M15 42 Q30 25 42 20 Q25 30 15 42 Z" fill="#026fc2"/>
-                            <circle cx="38" cy="12" r="3" fill="#03589f"/>
-                        </svg>
                     </div>
                 </div>
 
-                <!-- 2. INFORMATIONS PROFESSIONNELLES (Right Column - 7 cols width) -->
-                <div class="col-span-7 section-box p-3 pt-5">
-                    <!-- Section Badge -->
+                <div class="col-span-7 section-box p-4 pt-6">
                     <div class="section-badge">
-                        <i class="fa-solid fa-briefcase text-[10px]"></i>
+                        <i class="fa-solid fa-briefcase text-xs"></i>
                         <span>2. INFORMATIONS PROFESSIONNELLES</span>
                     </div>
 
-                    <!-- Form Fields -->
-                    <div class="space-y-1 text-[11px] mt-0.5">
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Matricule :</label>
-                            <div class="col-span-7"><input type="text" id="matricule" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Date de recrutement :</label>
-                            <div class="col-span-7"><input type="text" id="date_recrutement" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Corps :</label>
-                            <div class="col-span-7"><input type="text" id="corps" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Grade :</label>
-                            <div class="col-span-7"><input type="text" id="grade" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Fonction :</label>
-                            <div class="col-span-7"><input type="text" id="fonction" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Matière enseignée :</label>
-                            <div class="col-span-7"><input type="text" id="matiere" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Niveau(x) pris en charge :</label>
-                            <div class="col-span-7"><input type="text" id="niveaux" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Établissement d'affectation :</label>
-                            <div class="col-span-7"><input type="text" id="etablissement" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Commune :</label>
-                            <div class="col-span-7"><input type="text" id="commune" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Wilaya :</label>
-                            <div class="col-span-7"><input type="text" id="wilaya" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Ancienneté générale :</label>
-                            <div class="col-span-7"><input type="text" id="anciennete_generale" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Ancienneté dans le poste :</label>
-                            <div class="col-span-7"><input type="text" id="anciennete_poste" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Diplôme(s) obtenu(s) :</label>
-                            <div class="col-span-7"><input type="text" id="diplomes" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Établissement de formation :</label>
-                            <div class="col-span-7"><input type="text" id="etablissement_formation" class="dot-input"></div>
-                        </div>
-
-                        <div class="grid grid-cols-12 gap-1 items-center">
-                            <label class="col-span-5 font-semibold text-theme-900">Année scolaire :</label>
-                            <div class="col-span-7"><input type="text" id="annee_scolaire" class="dot-input"></div>
-                        </div>
+                    <div class="space-y-2 text-xs mt-1">
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Matricule :</label><div class="col-span-8"><input type="text" id="p1_matricule" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Date de recrutement :</label><div class="col-span-8"><input type="text" id="p1_date_recrutement" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Corps :</label><div class="col-span-8"><input type="text" id="p1_corps" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Grade :</label><div class="col-span-8"><input type="text" id="p1_grade" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Fonction :</label><div class="col-span-8"><input type="text" id="p1_fonction" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Matière enseignée :</label><div class="col-span-8"><input type="text" id="p1_matiere" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Niveau(x) pris en charge :</label><div class="col-span-8"><input type="text" id="p1_niveaux" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Établissement d'affectation :</label><div class="col-span-8"><input type="text" id="p1_etablissement" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Commune :</label><div class="col-span-8"><input type="text" id="p1_commune" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Wilaya :</label><div class="col-span-8"><input type="text" id="p1_wilaya" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Ancienneté générale :</label><div class="col-span-8"><input type="text" id="p1_anciennete_gen" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Ancienneté dans le poste :</label><div class="col-span-8"><input type="text" id="p1_anciennete_poste" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Diplôme(s) obtenu(s) :</label><div class="col-span-8"><input type="text" id="p1_diplomes" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Établissement de formation :</label><div class="col-span-8"><input type="text" id="p1_etab_formation" class="dot-input"></div></div>
+                        <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-4 font-semibold text-theme-900">Année scolaire :</label><div class="col-span-8"><input type="text" id="p1_annee_scolaire" class="dot-input"></div></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. PERSONNE ACCOMPAGNATRICE -->
-            <div class="section-box p-3 pt-5 mb-3">
-                <!-- Section Badge -->
+            <div class="section-box p-4 pt-6 mb-5">
                 <div class="section-badge">
-                    <i class="fa-solid fa-user-group text-[10px]"></i>
+                    <i class="fa-solid fa-user-group text-xs"></i>
                     <span>3. PERSONNE ACCOMPAGNATRICE</span>
                 </div>
-
-                <div class="grid grid-cols-12 gap-4 text-[11px] mt-0.5">
-                    <!-- Left Column -->
-                    <div class="col-span-7 space-y-1.5">
-                        <div>
-                            <label class="block font-semibold text-theme-900 mb-0.5">Nom et prénom du professeur accompagnateur :</label>
-                            <input type="text" id="accompagnateur_nom" class="dot-input">
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block font-semibold text-theme-900 mb-0.5">Fonction :</label>
-                                <input type="text" id="accompagnateur_fonction" class="dot-input">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-theme-900 mb-0.5">Matière :</label>
-                                <input type="text" id="accompagnateur_matiere" class="dot-input">
-                            </div>
-                        </div>
+                <div class="grid grid-cols-12 gap-6 text-xs mt-1">
+                    <div class="col-span-7 space-y-3">
+                        <div><label class="block font-semibold text-theme-900 mb-0.5">Nom et prénom du professeur accompagnateur :</label><input type="text" id="p1_acc_nom" class="dot-input"></div>
+                        <div><label class="block font-semibold text-theme-900 mb-0.5">Fonction :</label><input type="text" id="p1_acc_fonction" class="dot-input"></div>
+                        <div><label class="block font-semibold text-theme-900 mb-0.5">Matière :</label><input type="text" id="p1_acc_matiere" class="dot-input"></div>
                     </div>
-
-                    <!-- Right Column -->
-                    <div class="col-span-5 space-y-1.5 flex flex-col justify-between">
-                        <div>
-                            <label class="block font-semibold text-theme-900 mb-0.5">Téléphone :</label>
-                            <input type="text" id="accompagnateur_tel" class="dot-input">
-                        </div>
-                        <div>
-                            <label class="block font-semibold text-theme-900 mb-0.5">Signature :</label>
-                            <div class="h-8 border-b border-dotted border-theme-400"></div>
-                        </div>
+                    <div class="col-span-5 space-y-3 flex flex-col justify-between">
+                        <div><label class="block font-semibold text-theme-900 mb-0.5">Téléphone :</label><input type="text" id="p1_acc_tel" class="dot-input"></div>
+                        <div class="mt-4"><label class="block font-semibold text-theme-900 mb-0.5">Signature :</label><div class="h-10 border-b border-dotted border-theme-400"></div></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. OBSERVATIONS ET REMARQUES -->
-            <div class="section-box p-3 pt-5 relative mb-2">
-                <!-- Section Badge -->
+            <div class="section-box p-4 pt-6 relative">
                 <div class="section-badge">
-                    <i class="fa-solid fa-pen-to-square text-[10px]"></i>
+                    <i class="fa-solid fa-pen-to-square text-xs"></i>
                     <span>4. OBSERVATIONS ET REMARQUES</span>
                 </div>
+                <div class="space-y-3 pt-2 mb-2">
+                    <input type="text" id="p1_obs_1" class="dot-input">
+                    <input type="text" id="p1_obs_2" class="dot-input">
+                    <input type="text" id="p1_obs_3" class="dot-input">
+                    <input type="text" id="p1_obs_4" class="dot-input">
+                </div>
+            </div>
+        </div>
 
-                <!-- Dotted Writing Lines -->
-                <div class="space-y-2 pt-1 mb-1 text-[11px]">
-                    <input type="text" id="obs_1" class="dot-input">
-                    <input type="text" id="obs_2" class="dot-input">
-                    <input type="text" id="obs_3" class="dot-input">
+        <!-- PAGE 2: MON EMPLOI DU TEMPS -->
+        <div id="page-2" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-4">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold">Mon emploi du temps</h1>
+                <div class="section-box p-4 mt-4 text-xs font-semibold text-theme-900 grid grid-cols-2 gap-x-8 gap-y-3">
+                    <div class="flex items-center gap-2"><span class="whitespace-nowrap">Établissement :</span><input type="text" id="p2_etablissement" class="dot-input"></div>
+                    <div class="flex items-center gap-2"><span class="whitespace-nowrap">Année scolaire :</span><input type="text" id="p2_annee" class="dot-input"></div>
+                    <div class="flex items-center gap-2"><span class="whitespace-nowrap">Enseignant(e) :</span><input type="text" id="p2_enseignant" class="dot-input"></div>
+                    <div class="flex items-center gap-2"><span class="whitespace-nowrap">Classe :</span><input type="text" id="p2_classe" class="dot-input"></div>
                 </div>
             </div>
 
-            <!-- Bottom Ornamental Line -->
-            <div class="mt-1 text-center text-theme-400 flex items-center justify-center gap-3">
-                <svg width="100" height="10" viewBox="0 0 120 12" fill="none">
-                    <path d="M0 6 Q 30 12 60 6 Q 90 0 120 6" stroke="#7cc8fb" stroke-width="1" fill="none"/>
-                </svg>
-                <i class="fa-solid fa-heart text-[10px] text-theme-500"></i>
-                <svg width="100" height="10" viewBox="0 0 120 12" fill="none">
-                    <path d="M0 6 Q 30 0 60 6 Q 90 12 120 6" stroke="#7cc8fb" stroke-width="1" fill="none"/>
-                </svg>
+            <div class="mt-6 border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white">
+                <table class="w-full text-xs text-center border-collapse">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold">
+                            <th class="p-2 border-r border-theme-400 w-24">Jours</th>
+                            <th class="p-2 border-r border-theme-400">08:00<br>09:00</th>
+                            <th class="p-2 border-r border-theme-400">09:00<br>10:00</th>
+                            <th class="p-2 border-r border-theme-400">10:00<br>11:00</th>
+                            <th class="p-2 border-r border-theme-400">11:00<br>12:00</th>
+                            <th class="p-2 border-r border-theme-400 bg-theme-800">12:00<br>13:00</th>
+                            <th class="p-2 border-r border-theme-400">13:30<br>14:30</th>
+                            <th class="p-2 border-r border-theme-400">14:30<br>15:30</th>
+                            <th class="p-2">15:30<br>16:30</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-theme-200">
+                        <tr class="h-16"><td class="font-bold bg-theme-100/70 text-theme-900 border-r border-theme-300 p-2">Dimanche</td><td class="border-r border-theme-200 p-1"><textarea id="p2_dim_1" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_dim_2" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_dim_3" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_dim_4" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1 bg-slate-50 text-slate-400 italic text-[10px] flex items-center justify-center">Pause</td><td class="border-r border-theme-200 p-1"><textarea id="p2_dim_5" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_dim_6" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="p-1"><textarea id="p2_dim_7" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td></tr>
+                        <tr class="h-16"><td class="font-bold bg-theme-100/70 text-theme-900 border-r border-theme-300 p-2">Lundi</td><td class="border-r border-theme-200 p-1"><textarea id="p2_lun_1" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_lun_2" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_lun_3" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_lun_4" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1 bg-slate-50 text-slate-400 italic text-[10px] flex items-center justify-center">Pause</td><td class="border-r border-theme-200 p-1"><textarea id="p2_lun_5" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_lun_6" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="p-1"><textarea id="p2_lun_7" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td></tr>
+                        <tr class="h-16"><td class="font-bold bg-theme-100/70 text-theme-900 border-r border-theme-300 p-2">Mardi</td><td class="border-r border-theme-200 p-1"><textarea id="p2_mar_1" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_mar_2" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_mar_3" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_mar_4" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1 bg-slate-50 text-slate-400 italic text-[10px] flex items-center justify-center">Pause</td><td class="border-r border-theme-200 p-1"><textarea id="p2_mar_5" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_mar_6" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="p-1"><textarea id="p2_mar_7" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td></tr>
+                        <tr class="h-16"><td class="font-bold bg-theme-100/70 text-theme-900 border-r border-theme-300 p-2">Mercredi</td><td class="border-r border-theme-200 p-1"><textarea id="p2_mer_1" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_mer_2" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_mer_3" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_mer_4" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1 bg-slate-50 text-slate-400 italic text-[10px] flex items-center justify-center">Pause</td><td class="border-r border-theme-200 p-1"><textarea id="p2_mer_5" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_mer_6" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="p-1"><textarea id="p2_mer_7" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td></tr>
+                        <tr class="h-16"><td class="font-bold bg-theme-100/70 text-theme-900 border-r border-theme-300 p-2">Jeudi</td><td class="border-r border-theme-200 p-1"><textarea id="p2_jeu_1" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_jeu_2" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_jeu_3" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_jeu_4" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1 bg-slate-50 text-slate-400 italic text-[10px] flex items-center justify-center">Pause</td><td class="border-r border-theme-200 p-1"><textarea id="p2_jeu_5" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p2_jeu_6" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td><td class="p-1"><textarea id="p2_jeu_7" class="w-full h-full text-center bg-transparent outline-none resize-none text-[11px]"></textarea></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-6 text-center mt-12 text-xs font-semibold text-theme-900">
+                <div><p class="mb-1">Enseignant(e) :</p><div class="h-16 border-b border-dotted border-theme-400 flex items-end justify-center pb-1 text-slate-400 italic">Signature / Visa</div></div>
+                <div><p class="mb-1">Directeur(rice) :</p><div class="h-16 border-b border-dotted border-theme-400 flex items-end justify-center pb-1 text-slate-400 italic">Signature / Tampon</div></div>
+                <div><p class="mb-1">Inspecteur(rice) :</p><div class="h-16 border-b border-dotted border-theme-400 flex items-end justify-center pb-1 text-slate-400 italic">Signature / Visa</div></div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: TABLEAU D'EMPLOI DU TEMPS -->
+        <div id="page-3" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-6">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Tableau d'emploi du temps</h1>
+                <div class="section-box p-4 mt-4 space-y-2 text-xs font-semibold text-theme-900 max-w-2xl mx-auto">
+                    <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-3 text-right pr-2 uppercase text-[11px]">Établissement :</label><div class="col-span-9"><input type="text" id="p3_etablissement" class="dot-input"></div></div>
+                    <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-3 text-right pr-2 uppercase text-[11px]">Enseignante :</label><div class="col-span-9"><input type="text" id="p3_enseignante" class="dot-input"></div></div>
+                    <div class="grid grid-cols-12 gap-2 items-center"><label class="col-span-3 text-right pr-2 uppercase text-[11px]">Directeur :</label><div class="col-span-9"><input type="text" id="p3_directeur" class="dot-input"></div></div>
+                </div>
             </div>
 
+            <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white mt-4">
+                <table class="w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center uppercase tracking-wider">
+                            <th class="p-3 border-r border-theme-400 w-36">Horaires</th>
+                            <th class="p-3 border-r border-theme-400">Dimanche</th>
+                            <th class="p-3 border-r border-theme-400">Lundi</th>
+                            <th class="p-3 border-r border-theme-400">Mardi</th>
+                            <th class="p-3 border-r border-theme-400">Mercredi</th>
+                            <th class="p-3">Jeudi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-theme-200">
+                        <tr class="h-16"><td class="bg-theme-50 font-semibold text-theme-900 p-2 text-center border-r border-theme-300">08:00 - 09:00</td><td class="border-r border-theme-200 p-1"><textarea id="p3_r1_c1" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r1_c2" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r1_c3" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r1_c4" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="p-1"><textarea id="p3_r1_c5" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td></tr>
+                        <tr class="h-16"><td class="bg-theme-50 font-semibold text-theme-900 p-2 text-center border-r border-theme-300">09:00 - 10:00</td><td class="border-r border-theme-200 p-1"><textarea id="p3_r2_c1" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r2_c2" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r2_c3" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r2_c4" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="p-1"><textarea id="p3_r2_c5" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td></tr>
+                        <tr class="h-16"><td class="bg-theme-50 font-semibold text-theme-900 p-2 text-center border-r border-theme-300">10:00 - 11:00</td><td class="border-r border-theme-200 p-1"><textarea id="p3_r3_c1" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r3_c2" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r3_c3" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r3_c4" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="p-1"><textarea id="p3_r3_c5" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td></tr>
+                        <tr class="h-16"><td class="bg-theme-50 font-semibold text-theme-900 p-2 text-center border-r border-theme-300">11:00 - 12:00</td><td class="border-r border-theme-200 p-1"><textarea id="p3_r4_c1" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r4_c2" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r4_c3" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r4_c4" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="p-1"><textarea id="p3_r4_c5" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td></tr>
+                        <tr class="h-16"><td class="bg-theme-50 font-semibold text-theme-900 p-2 text-center border-r border-theme-300">13:00 - 14:00</td><td class="border-r border-theme-200 p-1"><textarea id="p3_r5_c1" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r5_c2" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r5_c3" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="border-r border-theme-200 p-1"><textarea id="p3_r5_c4" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td><td class="p-1"><textarea id="p3_r5_c5" class="w-full h-full text-center bg-transparent outline-none resize-none text-xs"></textarea></td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-<!-- ... existing code ... -->
+
+        <!-- PAGE 4: VACANCES & JOURS FÉRIÉS -->
+        <div id="page-4" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-6">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Vacances, Jours fériés et Compositions</h1>
+            </div>
+
+            <div class="mb-6">
+                <h2 class="text-theme-900 font-bold font-cursive text-2xl mb-2"><i class="fa-solid fa-umbrella-beach text-theme-600"></i> 1. Vacances scolaires</h2>
+                <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white">
+                    <table class="w-full text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-theme-700 to-theme-600 text-white font-bold text-center">
+                                <th class="p-2.5 border-r border-theme-400 w-1/4">Type de vacances</th>
+                                <th class="p-2.5 border-r border-theme-400 w-1/4">Date de début</th>
+                                <th class="p-2.5 border-r border-theme-400 w-1/4">Date de fin</th>
+                                <th class="p-2.5 w-1/4">Nombre de jours</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-theme-200">
+                            <tr><td class="font-semibold text-theme-900 bg-theme-50 p-2.5 border-r border-theme-300">Vacances d'automne</td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_vac1_debut" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_vac1_fin" class="dot-input text-center"></td><td class="p-2"><input type="text" id="p4_vac1_nb" class="dot-input text-center"></td></tr>
+                            <tr><td class="font-semibold text-theme-900 bg-theme-50 p-2.5 border-r border-theme-300">Vacances d'hiver</td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_vac2_debut" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_vac2_fin" class="dot-input text-center"></td><td class="p-2"><input type="text" id="p4_vac2_nb" class="dot-input text-center"></td></tr>
+                            <tr><td class="font-semibold text-theme-900 bg-theme-50 p-2.5 border-r border-theme-300">Vacances de printemps</td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_vac3_debut" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_vac3_fin" class="dot-input text-center"></td><td class="p-2"><input type="text" id="p4_vac3_nb" class="dot-input text-center"></td></tr>
+                            <tr><td class="font-semibold text-theme-900 bg-theme-50 p-2.5 border-r border-theme-300">Vacances d'été</td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_vac4_debut" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_vac4_fin" class="dot-input text-center"></td><td class="p-2"><input type="text" id="p4_vac4_nb" class="dot-input text-center"></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h2 class="text-theme-900 font-bold font-cursive text-2xl mb-2"><i class="fa-solid fa-star text-theme-600"></i> 2. Jours fériés</h2>
+                <div class="border-2 border-theme-300 rounded-2xl overflow-hidden bg-white">
+                    <table class="w-full text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-theme-700 to-theme-600 text-white font-bold text-center">
+                                <th class="p-2 border-r border-theme-400 w-28">Date</th>
+                                <th class="p-2 border-r border-theme-400 w-28">Jour</th>
+                                <th class="p-2 border-r border-theme-400">Jour férié</th>
+                                <th class="p-2">Observations</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-theme-200">
+                            <tr><td class="p-2 border-r border-theme-200"><input type="text" id="p4_fer1_date" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_fer1_jour" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_fer1_nom" class="dot-input"></td><td class="p-2"><input type="text" id="p4_fer1_obs" class="dot-input"></td></tr>
+                            <tr><td class="p-2 border-r border-theme-200"><input type="text" id="p4_fer2_date" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_fer2_jour" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_fer2_nom" class="dot-input"></td><td class="p-2"><input type="text" id="p4_fer2_obs" class="dot-input"></td></tr>
+                            <tr><td class="p-2 border-r border-theme-200"><input type="text" id="p4_fer3_date" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_fer3_jour" class="dot-input text-center"></td><td class="p-2 border-r border-theme-200"><input type="text" id="p4_fer3_nom" class="dot-input"></td><td class="p-2"><input type="text" id="p4_fer3_obs" class="dot-input"></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section-box p-5">
+                <h2 class="text-theme-900 font-bold font-cursive text-2xl mb-3"><i class="fa-solid fa-pen-ruler text-theme-600"></i> 3. Dates des compositions</h2>
+                <div class="space-y-3 text-xs font-semibold text-theme-900">
+                    <div class="flex items-center gap-3"><span>Composition 1<sup>er</sup> trimestre :</span><input type="text" id="p4_comp_1" class="dot-input"></div>
+                    <div class="flex items-center gap-3"><span>Composition 2<sup>ème</sup> trimestre :</span><input type="text" id="p4_comp_2" class="dot-input"></div>
+                    <div class="flex items-center gap-3"><span>Composition 3<sup>ème</sup> trimestre :</span><input type="text" id="p4_comp_3" class="dot-input"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 5: SÉMINAIRES -->
+        <div id="page-5" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-4">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Séminaires</h1>
+                <p class="text-xs text-slate-500">Formations, Ateliers et Conférences Pédagogiques</p>
+            </div>
+
+            <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white mt-2">
+                <table class="w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center">
+                            <th class="p-2.5 border-r border-theme-400 w-24">Date</th>
+                            <th class="p-2.5 border-r border-theme-400 w-36">Thème du séminaire</th>
+                            <th class="p-2.5 border-r border-theme-400 w-32">Organisme / Intervenant</th>
+                            <th class="p-2.5 border-r border-theme-400 w-24">Lieu</th>
+                            <th class="p-2.5 border-r border-theme-400 w-20">Durée</th>
+                            <th class="p-2.5 border-r border-theme-400">Points essentiels à retenir</th>
+                            <th class="p-2.5 w-28">Observations</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-theme-200">
+                        <tr class="h-28 hover:bg-theme-50/50">
+                            <td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p5_sem1_date" class="dot-input text-center"></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><textarea id="p5_sem1_theme" class="dot-textarea h-24 text-xs"></textarea></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><textarea id="p5_sem1_org" class="dot-textarea h-24 text-xs"></textarea></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p5_sem1_lieu" class="dot-input text-center"></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p5_sem1_duree" class="dot-input text-center"></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><textarea id="p5_sem1_pts" class="dot-textarea h-24 text-xs"></textarea></td>
+                            <td class="p-2 align-top"><textarea id="p5_sem1_obs" class="dot-textarea h-24 text-xs"></textarea></td>
+                        </tr>
+                        <tr class="h-28 hover:bg-theme-50/50">
+                            <td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p5_sem2_date" class="dot-input text-center"></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><textarea id="p5_sem2_theme" class="dot-textarea h-24 text-xs"></textarea></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><textarea id="p5_sem2_org" class="dot-textarea h-24 text-xs"></textarea></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p5_sem2_lieu" class="dot-input text-center"></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p5_sem2_duree" class="dot-input text-center"></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><textarea id="p5_sem2_pts" class="dot-textarea h-24 text-xs"></textarea></td>
+                            <td class="p-2 align-top"><textarea id="p5_sem2_obs" class="dot-textarea h-24 text-xs"></textarea></td>
+                        </tr>
+                        <tr class="h-28 hover:bg-theme-50/50">
+                            <td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p5_sem3_date" class="dot-input text-center"></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><textarea id="p5_sem3_theme" class="dot-textarea h-24 text-xs"></textarea></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><textarea id="p5_sem3_org" class="dot-textarea h-24 text-xs"></textarea></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p5_sem3_lieu" class="dot-input text-center"></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p5_sem3_duree" class="dot-input text-center"></td>
+                            <td class="p-2 border-r border-theme-200 align-top"><textarea id="p5_sem3_pts" class="dot-textarea h-24 text-xs"></textarea></td>
+                            <td class="p-2 align-top"><textarea id="p5_sem3_obs" class="dot-textarea h-24 text-xs"></textarea></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PAGE 6: TRAVAIL À EFFECTUER (TABLEAU RALLONGÉ POUR COMBLER LE VIDE) -->
+        <div id="page-6" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden flex flex-col justify-between">
+            <div class="h-full flex flex-col justify-between flex-1">
+                <div class="relative text-center pt-2 mb-2">
+                    <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Travail à effectuer</h1>
+                    <p class="text-xs text-slate-500">Cahier de Texte et Déroulement des Séances — Français</p>
+                </div>
+
+                <!-- Extended Work Table filled with 15 rows to stretch across full page height -->
+                <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white mt-2 flex-1 flex flex-col justify-between mb-2">
+                    <table class="w-full text-xs border-collapse h-full">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center">
+                                <th class="p-2 border-r border-theme-400 w-24">Date</th>
+                                <th class="p-2 border-r border-theme-400 w-24">Classe</th>
+                                <th class="p-2 border-r border-theme-400 w-20">Heure</th>
+                                <th class="p-2 border-r border-theme-400">Travail à effectuer / Activités</th>
+        <!-- PAGE 6: TRAVAIL À EFFECTUER (COMPLETEMENT AJUSTÉ À L'ÉCRAN A4) -->
+        <div id="page-6" class="a4-page relative bg-white w-[210mm] h-[297mm] max-h-[297mm] mx-auto p-7 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden flex flex-col justify-between">
+            <div class="h-full flex flex-col justify-between flex-1">
+                <div class="relative text-center pt-1 mb-2">
+                    <h1 class="font-cursive text-4xl text-theme-800 font-bold mb-0.5">Travail à effectuer</h1>
+                    <p class="text-[11px] text-slate-500">Cahier de Texte et Déroulement des Séances — Français</p>
+                </div>
+
+                <!-- Extended Work Table balanced for 297mm exact height -->
+                <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white my-auto flex-1 flex flex-col justify-between">
+                    <table class="w-full text-[11px] border-collapse h-full">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center">
+                                <th class="p-1.5 border-r border-theme-400 w-20">Date</th>
+                                <th class="p-1.5 border-r border-theme-400 w-20">Classe</th>
+                                <th class="p-1.5 border-r border-theme-400 w-24">Heure</th>
+                                <th class="p-1.5 border-r border-theme-400">Travail à effectuer / Activités</th>
+                                <th class="p-1.5 w-28">Observation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="p6_table_body" class="divide-y divide-theme-200">
+                            <!-- 12 Balanced Rows filling total height -->
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r1_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r1_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r1_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r1_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r1_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r2_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r2_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r2_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r2_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r2_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r3_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r3_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r3_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r3_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r3_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r4_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r4_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r4_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r4_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r4_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r5_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r5_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r5_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r5_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r5_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r6_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r6_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r6_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r6_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r6_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r7_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r7_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r7_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r7_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r7_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r8_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r8_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r8_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r8_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r8_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r9_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r9_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r9_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r9_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r9_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r10_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r10_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r10_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r10_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r10_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r11_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r11_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r11_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r11_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r11_obs" class="dot-input"></td>
+                            </tr>
+                            <tr class="h-14">
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r12_date" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r12_classe" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><input type="text" id="p6_r12_heure" class="dot-input text-center"></td>
+                                <td class="p-1 border-r border-theme-200"><textarea id="p6_r12_travail" class="dot-textarea h-10 text-[11px]"></textarea></td>
+                                <td class="p-1"><input type="text" id="p6_r12_obs" class="dot-input"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 7: FICHE DE PREPARATION - SEANCE N° (PARFAITEMENT COMPACTE POUR TENIR SUR UNE SEULE PAGE A4) -->
+        <div id="page-7" class="a4-page relative bg-white w-[210mm] h-[297mm] max-h-[297mm] mx-auto p-5 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden text-[11px] font-sans flex flex-col justify-between">
+            
+            <div>
+                <!-- Header Title Box -->
+                <div class="bg-gradient-to-r from-theme-800 to-theme-700 text-white font-bold px-2.5 py-1 rounded-t-md uppercase tracking-wider flex items-center justify-between text-[11px] mb-0.5">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-file-pen"></i>
+                        <span>FICHE DE PREPARATION — SEANCE N°</span>
+                        <input type="text" id="p7_seance_num" class="bg-white/20 text-white font-extrabold w-14 text-center outline-none border-b border-white px-1 py-0 rounded">
+                    </div>
+                </div>
+
+                <!-- Top Header Metadata Grid Table -->
+                <div class="border border-theme-300 bg-white rounded-b-md overflow-hidden mb-1.5">
+                    <table class="w-full border-collapse text-[10px]">
+                        <tbody>
+                            <tr class="border-b border-theme-200">
+                                <td class="bg-theme-100/70 font-semibold text-theme-900 p-1 w-14 border-r border-theme-300">Date</td>
+                                <td class="p-0.5 border-r border-theme-200 w-1/4"><input type="text" id="p7_date" class="dot-input text-center"></td>
+                                <td class="bg-theme-100/70 font-semibold text-theme-900 p-1 w-24 border-r border-theme-300">Classe / Niveau</td>
+                                <td class="p-0.5 border-r border-theme-200"><input type="text" id="p7_classe" class="dot-input text-center"></td>
+                                <td class="bg-theme-100/70 font-semibold text-theme-900 p-1 w-14 border-r border-theme-300">Durée</td>
+                                <td class="p-0.5 w-20"><input type="text" id="p7_duree" class="dot-input text-center"></td>
+                            </tr>
+                            <tr class="border-b border-theme-200">
+                                <td class="bg-theme-50 font-semibold text-theme-900 p-1 border-r border-theme-300">Projet</td>
+                                <td colspan="5" class="p-0.5"><input type="text" id="p7_projet" class="dot-input"></td>
+                            </tr>
+                            <tr class="border-b border-theme-200">
+                                <td class="bg-theme-50 font-semibold text-theme-900 p-1 border-r border-theme-300">Séquence</td>
+                                <td class="p-0.5 border-r border-theme-200"><input type="text" id="p7_sequence" class="dot-input"></td>
+                                <td class="bg-theme-50 font-semibold text-theme-900 p-1 border-r border-theme-300">Objet d'étude</td>
+                                <td colspan="3" class="p-0.5"><input type="text" id="p7_objet_etude" class="dot-input"></td>
+                            </tr>
+                            <tr class="border-b border-theme-200">
+                                <td class="bg-theme-50 font-semibold text-theme-900 p-1 border-r border-theme-300 whitespace-nowrap">Nature de la séance</td>
+                                <td colspan="5" class="p-0.5 text-[9.5px]">
+                                    <div class="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 font-medium text-slate-700">
+                                        <label class="check-label"><input type="checkbox" id="p7_nat_co"> CO</label>
+                                        <label class="check-label"><input type="checkbox" id="p7_nat_po"> Oral/PO</label>
+                                        <label class="check-label"><input type="checkbox" id="p7_nat_ce"> CE/Lecture</label>
+                                        <label class="check-label"><input type="checkbox" id="p7_nat_langue"> Langue</label>
+                                        <label class="check-label"><input type="checkbox" id="p7_nat_pe"> PE</label>
+                                        <label class="check-label"><input type="checkbox" id="p7_nat_diag"> Éval. diagnostique</label>
+                                        <label class="check-label"><input type="checkbox" id="p7_nat_remed"> Remédiation</label>
+                                        <label class="check-label"><input type="checkbox" id="p7_nat_lanc"> Lancement projet/séq</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bg-theme-50 font-semibold text-theme-900 p-1 border-r border-theme-300 align-top">
+                                    Objectifs :
+                                </td>
+                                <td colspan="5" class="p-1 text-[9.5px]">
+                                    <div class="space-y-0.5">
+                                        <div class="flex items-center gap-1.5"><span class="font-bold text-theme-800 w-16">Savoir :</span><input type="text" id="p7_obj_savoir" class="dot-input"></div>
+                                        <div class="flex items-center gap-1.5"><span class="font-bold text-theme-800 w-16">Savoir-faire :</span><input type="text" id="p7_obj_savoir_faire" class="dot-input"></div>
+                                        <div class="flex items-center gap-1.5"><span class="font-bold text-theme-800 w-16">Savoir-être :</span><input type="text" id="p7_obj_savoir_etre" class="dot-input"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Matériel / Supports Banner Box -->
+                <div class="bg-gradient-to-r from-theme-800 to-theme-700 text-white font-bold px-2.5 py-0.5 rounded-t-md uppercase tracking-wider text-[10px] flex items-center gap-2 mb-0">
+                    <span>MATERIEL / SUPPORTS</span>
+                </div>
+                <div class="border border-theme-300 bg-white p-1 rounded-b-md mb-1.5 text-[9.5px] font-medium text-slate-700 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                    <label class="check-label"><input type="checkbox" id="p7_sup_manuel"> Manuel (p. <input type="text" id="p7_sup_manuel_p" class="dot-input inline-block w-8 text-center py-0"> )</label>
+                    <label class="check-label"><input type="checkbox" id="p7_sup_fiche"> Fiche/Texte</label>
+                    <label class="check-label"><input type="checkbox" id="p7_sup_audio"> Audio/Vidéo</label>
+                    <label class="check-label"><input type="checkbox" id="p7_sup_datashow"> Data-show/TICE</label>
+                    <label class="check-label"><input type="checkbox" id="p7_sup_tableau"> Tableau</label>
+                    <label class="check-label"><input type="checkbox" id="p7_sup_autre_chk"> Autre : <input type="text" id="p7_sup_autre_txt" class="dot-input inline-block w-24 py-0"></label>
+                </div>
+
+                <!-- Déroulement de la séance Header Banner -->
+                <div class="bg-gradient-to-r from-theme-800 to-theme-700 text-white font-bold px-2.5 py-0.5 rounded-t-md uppercase tracking-wider text-[10px] mb-0">
+                    DEROULEMENT DE LA SEANCE
+                </div>
+
+                <!-- Main Lesson Steps Table -->
+                <div class="border border-theme-300 bg-white rounded-b-md overflow-hidden mb-1.5">
+                    <table class="w-full border-collapse text-[9.5px]">
+                        <thead>
+                            <tr class="bg-theme-700 text-white font-bold text-center uppercase tracking-wider text-[9px]">
+                                <th class="p-1 border-r border-theme-500 w-36">PHASE / OBJECTIF</th>
+                                <th class="p-1 border-r border-theme-500">ACTIVITE DE L'ENSEIGNANT(E) / DES ELEVES</th>
+                                <th class="p-1 w-20">MODALITE</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-theme-200">
+                            <!-- Step 1: Mise en route -->
+                            <tr>
+                                <td class="p-1 border-r border-theme-300 bg-theme-50/60 align-top font-semibold text-theme-900">
+                                    <div class="font-bold">Mise en route</div>
+                                    <div class="text-[8.5px] text-slate-500 italic">Durée : <input type="text" id="p7_p1_duree" class="dot-input inline-block w-8 text-center py-0" value="05"> min</div>
+                                </td>
+                                <td class="p-1 border-r border-theme-200 align-top">
+                                    <textarea id="p7_p1_act" class="dot-textarea h-9 text-[9.5px]"></textarea>
+                                </td>
+                                <td class="p-1 align-top text-[8.5px] space-y-0.5">
+                                    <label class="check-label block"><input type="checkbox" id="p7_p1_m_ind"> Indiv</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p1_m_bin"> Binôme</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p1_m_grp"> Groupe</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p1_m_col" checked> Collectif</label>
+                                </td>
+                            </tr>
+
+                            <!-- Step 2: Observation / Analyse -->
+                            <tr>
+                                <td class="p-1 border-r border-theme-300 bg-theme-50/60 align-top font-semibold text-theme-900">
+                                    <div class="font-bold">Observation / Analyse</div>
+                                    <div class="text-[8.5px] text-slate-500 italic">Durée : <input type="text" id="p7_p2_duree" class="dot-input inline-block w-8 text-center py-0" value="15"> min</div>
+                                </td>
+                                <td class="p-1 border-r border-theme-200 align-top">
+                                    <textarea id="p7_p2_act" class="dot-textarea h-9 text-[9.5px]"></textarea>
+                                </td>
+                                <td class="p-1 align-top text-[8.5px] space-y-0.5">
+                                    <label class="check-label block"><input type="checkbox" id="p7_p2_m_ind"> Indiv</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p2_m_bin"> Binôme</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p2_m_grp"> Groupe</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p2_m_col" checked> Collectif</label>
+                                </td>
+                            </tr>
+
+                            <!-- Step 3: Conceptualisation / Appropriation -->
+                            <tr>
+                                <td class="p-1 border-r border-theme-300 bg-theme-50/60 align-top font-semibold text-theme-900">
+                                    <div class="font-bold">Conceptualisation / Appropriation</div>
+                                    <div class="text-[8.5px] text-slate-500 italic">Durée : <input type="text" id="p7_p3_duree" class="dot-input inline-block w-8 text-center py-0" value="15"> min</div>
+                                </td>
+                                <td class="p-1 border-r border-theme-200 align-top">
+                                    <textarea id="p7_p3_act" class="dot-textarea h-9 text-[9.5px]"></textarea>
+                                </td>
+                                <td class="p-1 align-top text-[8.5px] space-y-0.5">
+                                    <label class="check-label block"><input type="checkbox" id="p7_p3_m_ind"> Indiv</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p3_m_bin" checked> Binôme</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p3_m_grp"> Groupe</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p3_m_col"> Collectif</label>
+                                </td>
+                            </tr>
+
+                            <!-- Step 4: Synthèse / Trace écrite -->
+                            <tr>
+                                <td class="p-1 border-r border-theme-300 bg-theme-50/60 align-top font-semibold text-theme-900">
+                                    <div class="font-bold">Synthèse / Trace écrite</div>
+                                    <div class="text-[8.5px] text-slate-500 italic">Durée : <input type="text" id="p7_p4_duree" class="dot-input inline-block w-8 text-center py-0" value="15"> min</div>
+                                </td>
+                                <td class="p-1 border-r border-theme-200 align-top">
+                                    <textarea id="p7_p4_act" class="dot-textarea h-9 text-[9.5px]"></textarea>
+                                </td>
+                                <td class="p-1 align-top text-[8.5px] space-y-0.5">
+                                    <label class="check-label block"><input type="checkbox" id="p7_p4_m_ind" checked> Indiv</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p4_m_bin"> Binôme</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p4_m_grp"> Groupe</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p4_m_col"> Collectif</label>
+                                </td>
+                            </tr>
+
+                            <!-- Step 5: Évaluation / Réinvestissement -->
+                            <tr>
+                                <td class="p-1 border-r border-theme-300 bg-theme-50/60 align-top font-semibold text-theme-900">
+                                    <div class="font-bold">Évaluation / Réinvestissement</div>
+                                    <div class="text-[8.5px] text-slate-500 italic">Durée : <input type="text" id="p7_p5_duree" class="dot-input inline-block w-8 text-center py-0" value="10"> min</div>
+                                </td>
+                                <td class="p-1 border-r border-theme-200 align-top">
+                                    <textarea id="p7_p5_act" class="dot-textarea h-9 text-[9.5px]"></textarea>
+                                </td>
+                                <td class="p-1 align-top text-[8.5px] space-y-0.5">
+                                    <label class="check-label block"><input type="checkbox" id="p7_p5_m_ind" checked> Indiv</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p5_m_bin"> Binôme</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p5_m_grp"> Groupe</label>
+                                    <label class="check-label block"><input type="checkbox" id="p7_p5_m_col"> Collectif</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Critères de réussite -->
+                <div class="mb-1.5">
+                    <div class="font-bold text-theme-900 mb-0.5 flex items-center gap-1 text-[10px]">
+                        <i class="fa-solid fa-check text-emerald-600"></i> Critères de réussite :
+                    </div>
+                    <div class="space-y-0.5 px-1">
+                        <div class="flex items-center gap-1"><span class="text-emerald-600 font-bold">✓</span> <input type="text" id="p7_crit_1" class="dot-input text-[9.5px]"></div>
+                        <div class="flex items-center gap-1"><span class="text-emerald-600 font-bold">✓</span> <input type="text" id="p7_crit_2" class="dot-input text-[9.5px]"></div>
+                        <div class="flex items-center gap-1"><span class="text-emerald-600 font-bold">✓</span> <input type="text" id="p7_crit_3" class="dot-input text-[9.5px]"></div>
+                    </div>
+                </div>
+
+                <!-- Grid (Différenciation & Devoirs/Prolongement) -->
+                <div class="grid grid-cols-12 gap-1.5 mb-1.5">
+                    <!-- Left: Différenciation -->
+                    <div class="col-span-8 border border-theme-300 rounded-md p-1.5 bg-white">
+                        <div class="font-bold text-theme-900 text-[9.5px] mb-0.5">Différenciation (soutien / approfondissement)</div>
+                        <textarea id="p7_diff_text" class="dot-textarea h-8 text-[9.5px]"></textarea>
+                    </div>
+                    <!-- Right: Devoirs / Prolongement -->
+                    <div class="col-span-4 border border-theme-300 rounded-md p-1.5 bg-white flex flex-col justify-between">
+                        <div class="font-bold text-theme-900 text-[9.5px] mb-0.5">Devoirs / Prolongement</div>
+                        <div class="space-y-0.5 text-[8.5px] text-slate-700">
+                            <label class="check-label block"><input type="checkbox" id="p7_dev_tad"> TAD</label>
+                            <label class="check-label block"><input type="checkbox" id="p7_dev_rech"> Recherche / Leçon</label>
+                            <label class="check-label block"><input type="checkbox" id="p7_dev_lect"> Lecture</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BILAN / OBSERVATIONS Banner & Box (At bottom of page) -->
+            <div>
+                <div class="bg-gradient-to-r from-theme-800 to-theme-700 text-white font-bold px-2.5 py-0.5 rounded-t-md uppercase tracking-wider text-[10px] mb-0">
+                    BILAN / OBSERVATIONS
+                </div>
+                <div class="border border-theme-300 bg-white rounded-b-md p-1.5 grid grid-cols-12 gap-2">
+                    <div class="col-span-4 border-r border-theme-200 pr-1.5">
+                        <div class="font-bold text-theme-900 text-[9.5px] mb-0.5">Statut :</div>
+                        <div class="space-y-0.5 text-[8.5px] text-slate-700">
+                            <label class="check-label block"><input type="checkbox" id="p7_stat_atteint"> Objectif atteint</label>
+                            <label class="check-label block"><input type="checkbox" id="p7_stat_consolider"> À consolider</label>
+                            <label class="check-label block"><input type="checkbox" id="p7_stat_reajuster"> À réajuster</label>
+                        </div>
+                    </div>
+                    <div class="col-span-8">
+                        <div class="font-bold text-theme-900 text-[9.5px] mb-0.5">Difficultés / ajustements pour la suite :</div>
+                        <textarea id="p7_bilan_notes" class="dot-textarea h-8 text-[9.5px]"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 8: SUIVI DES ÉLÈVES EN DIFFICULTÉ -->
+        <div id="page-8" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-4">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Suivi des élèves en difficulté</h1>
+                <p class="text-xs text-slate-500">Remédiation Pédagogique et Accompagnement Personnalisé</p>
+            </div>
+
+            <div class="section-box p-3 mb-4 text-xs font-semibold text-theme-900 grid grid-cols-3 gap-4">
+                <div class="flex items-center gap-2"><span>Classe :</span><input type="text" id="p8_classe" class="dot-input"></div>
+                <div class="flex items-center gap-2"><span>Enseignant(e) :</span><input type="text" id="p8_enseignant" class="dot-input"></div>
+                <div class="flex items-center gap-2"><span>Année scolaire :</span><input type="text" id="p8_annee" class="dot-input"></div>
+            </div>
+
+            <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white">
+                <table class="w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center">
+                            <th class="p-2.5 border-r border-theme-400 w-36">Nom et prénom de l'élève</th>
+                            <th class="p-2.5 border-r border-theme-400">Nature des difficultés constatées</th>
+                            <th class="p-2.5 border-r border-theme-400">Actions de remédiation prévues</th>
+                            <th class="p-2.5 w-32">Progrès / Observations</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-theme-200">
+                        <tr class="h-20 hover:bg-theme-50/50"><td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p8_s1_nom" class="dot-input"></td><td class="p-2 border-r border-theme-200 align-top"><textarea id="p8_s1_diff" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-2 border-r border-theme-200 align-top"><textarea id="p8_s1_actions" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-2 align-top"><textarea id="p8_s1_obs" class="dot-textarea h-16 text-xs"></textarea></td></tr>
+                        <tr class="h-20 hover:bg-theme-50/50"><td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p8_s2_nom" class="dot-input"></td><td class="p-2 border-r border-theme-200 align-top"><textarea id="p8_s2_diff" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-2 border-r border-theme-200 align-top"><textarea id="p8_s2_actions" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-2 align-top"><textarea id="p8_s2_obs" class="dot-textarea h-16 text-xs"></textarea></td></tr>
+                        <tr class="h-20 hover:bg-theme-50/50"><td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p8_s3_nom" class="dot-input"></td><td class="p-2 border-r border-theme-200 align-top"><textarea id="p8_s3_diff" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-2 border-r border-theme-200 align-top"><textarea id="p8_s3_actions" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-2 align-top"><textarea id="p8_s3_obs" class="dot-textarea h-16 text-xs"></textarea></td></tr>
+                        <tr class="h-20 hover:bg-theme-50/50"><td class="p-2 border-r border-theme-200 align-top"><input type="text" id="p8_s4_nom" class="dot-input"></td><td class="p-2 border-r border-theme-200 align-top"><textarea id="p8_s4_diff" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-2 border-r border-theme-200 align-top"><textarea id="p8_s4_actions" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-2 align-top"><textarea id="p8_s4_obs" class="dot-textarea h-16 text-xs"></textarea></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PAGE 9: PROGRESSION ANNUELLE / SÉQUENCES DIDACTIQUES -->
+        <div id="page-9" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-4">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Progression annuelle &amp; Séquences didactiques</h1>
+                <p class="text-xs text-slate-500">Répartition des projets, objets d'étude et compétences visées — Français</p>
+            </div>
+
+            <div class="section-box p-3 mb-4 text-xs font-semibold text-theme-900 grid grid-cols-3 gap-4">
+                <div class="flex items-center gap-2"><span>Classe / Niveau :</span><input type="text" id="p9_classe" class="dot-input"></div>
+                <div class="flex items-center gap-2"><span>Projet pédagogique N° :</span><input type="text" id="p9_projet" class="dot-input"></div>
+                <div class="flex items-center gap-2"><span>Année scolaire :</span><input type="text" id="p9_annee" class="dot-input"></div>
+            </div>
+
+            <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white">
+                <table class="w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center">
+                            <th class="p-2 border-r border-theme-400 w-14">Trim.</th>
+                            <th class="p-2 border-r border-theme-400 w-16">Séq. N°</th>
+                            <th class="p-2 border-r border-theme-400 w-40">Objet d'étude / Type de texte</th>
+                            <th class="p-2 border-r border-theme-400">Compétence(s) visée(s)</th>
+                            <th class="p-2 border-r border-theme-400 w-40">Support(s) / Corpus</th>
+                            <th class="p-2 border-r border-theme-400 w-16">Séances</th>
+                            <th class="p-2 w-28">Évaluation</th>
+                        </tr>
+                    </thead>
+                    <tbody id="p9_table_body" class="divide-y divide-theme-200">
+                        <tr class="h-16">
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r1_trim" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r1_seq" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r1_objet" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><textarea id="p9_r1_comp" class="dot-textarea h-12 text-xs"></textarea></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r1_support" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r1_seances" class="dot-input text-center"></td>
+                            <td class="p-1"><input type="text" id="p9_r1_eval" class="dot-input"></td>
+                        </tr>
+                        <tr class="h-16">
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r2_trim" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r2_seq" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r2_objet" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><textarea id="p9_r2_comp" class="dot-textarea h-12 text-xs"></textarea></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r2_support" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r2_seances" class="dot-input text-center"></td>
+                            <td class="p-1"><input type="text" id="p9_r2_eval" class="dot-input"></td>
+                        </tr>
+                        <tr class="h-16">
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r3_trim" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r3_seq" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r3_objet" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><textarea id="p9_r3_comp" class="dot-textarea h-12 text-xs"></textarea></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r3_support" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r3_seances" class="dot-input text-center"></td>
+                            <td class="p-1"><input type="text" id="p9_r3_eval" class="dot-input"></td>
+                        </tr>
+                        <tr class="h-16">
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r4_trim" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r4_seq" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r4_objet" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><textarea id="p9_r4_comp" class="dot-textarea h-12 text-xs"></textarea></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r4_support" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r4_seances" class="dot-input text-center"></td>
+                            <td class="p-1"><input type="text" id="p9_r4_eval" class="dot-input"></td>
+                        </tr>
+                        <tr class="h-16">
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r5_trim" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r5_seq" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r5_objet" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><textarea id="p9_r5_comp" class="dot-textarea h-12 text-xs"></textarea></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r5_support" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r5_seances" class="dot-input text-center"></td>
+                            <td class="p-1"><input type="text" id="p9_r5_eval" class="dot-input"></td>
+                        </tr>
+                        <tr class="h-16">
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r6_trim" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r6_seq" class="dot-input text-center"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r6_objet" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><textarea id="p9_r6_comp" class="dot-textarea h-12 text-xs"></textarea></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r6_support" class="dot-input"></td>
+                            <td class="p-1 border-r border-theme-200"><input type="text" id="p9_r6_seances" class="dot-input text-center"></td>
+                            <td class="p-1"><input type="text" id="p9_r6_eval" class="dot-input"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-box p-4 mt-5">
+                <div class="section-badge">
+                    <i class="fa-solid fa-list-check text-xs"></i>
+                    <span>DÉROULÉ DÉTAILLÉ D'UNE SÉQUENCE (COMPRÉHENSION → PRODUCTION)</span>
+                </div>
+                <div class="grid grid-cols-3 gap-3 pt-2 text-[11px] font-semibold text-theme-900">
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">1. Compréhension de l'oral</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">2. Compréhension de l'écrit</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">3. Points de langue (lexique/syntaxe)</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">4. Production orale</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">5. Préparation à l'écrit</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">6. Production écrite / Évaluation</div>
+                </div>
+                <textarea id="p9_deroule_notes" class="dot-textarea h-16 text-xs mt-3"></textarea>
+            </div>
+        </div>
+
+        <!-- PAGE 10: ŒUVRES AU PROGRAMME & SUIVI DES LECTURES -->
+        <div id="page-10" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-4">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Œuvres au programme &amp; Suivi des lectures</h1>
+                <p class="text-xs text-slate-500">Lecture suivie, lecture cursive et projets de lecture</p>
+            </div>
+
+            <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white mb-5">
+                <table class="w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center">
+                            <th class="p-2 border-r border-theme-400">Titre de l'œuvre</th>
+                            <th class="p-2 border-r border-theme-400 w-32">Auteur</th>
+                            <th class="p-2 border-r border-theme-400 w-24">Genre</th>
+                            <th class="p-2 border-r border-theme-400 w-28">Classe</th>
+                            <th class="p-2 border-r border-theme-400 w-32">Période prévue</th>
+                            <th class="p-2 border-r border-theme-400 w-28">Modalité</th>
+                            <th class="p-2 w-32">Évaluation prévue</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-theme-200">
+                        <tr class="h-12"><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o1_titre" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o1_auteur" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o1_genre" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o1_classe" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o1_periode" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o1_modalite" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p10_o1_eval" class="dot-input"></td></tr>
+                        <tr class="h-12"><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o2_titre" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o2_auteur" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o2_genre" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o2_classe" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o2_periode" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o2_modalite" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p10_o2_eval" class="dot-input"></td></tr>
+                        <tr class="h-12"><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o3_titre" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o3_auteur" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o3_genre" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o3_classe" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o3_periode" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o3_modalite" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p10_o3_eval" class="dot-input"></td></tr>
+                        <tr class="h-12"><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o4_titre" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o4_auteur" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o4_genre" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o4_classe" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o4_periode" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p10_o4_modalite" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p10_o4_eval" class="dot-input"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-box p-4">
+                <div class="section-badge">
+                    <i class="fa-solid fa-note-sticky text-xs"></i>
+                    <span>FICHE DE LECTURE — TRAME TYPE</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 pt-2 text-xs">
+                    <div><label class="block font-semibold text-theme-900 mb-0.5">Auteur &amp; contexte historique / littéraire :</label><textarea id="p10_fiche_contexte" class="dot-textarea h-14 text-xs"></textarea></div>
+                    <div><label class="block font-semibold text-theme-900 mb-0.5">Résumé de l'œuvre :</label><textarea id="p10_fiche_resume" class="dot-textarea h-14 text-xs"></textarea></div>
+                    <div><label class="block font-semibold text-theme-900 mb-0.5">Personnages principaux :</label><textarea id="p10_fiche_perso" class="dot-textarea h-14 text-xs"></textarea></div>
+                    <div><label class="block font-semibold text-theme-900 mb-0.5">Thèmes &amp; visée de l'auteur :</label><textarea id="p10_fiche_themes" class="dot-textarea h-14 text-xs"></textarea></div>
+                    <div class="col-span-2"><label class="block font-semibold text-theme-900 mb-0.5">Pistes d'exploitation pédagogique (questionnaire, débat, production) :</label><textarea id="p10_fiche_pistes" class="dot-textarea h-16 text-xs"></textarea></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 11: GRILLES D'ÉVALUATION - EXPRESSION ÉCRITE / ORALE -->
+        <div id="page-11" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-4">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Grilles d'évaluation</h1>
+                <p class="text-xs text-slate-500">Expression écrite — Critères, indicateurs et barème</p>
+            </div>
+
+            <div class="section-box p-3 mb-4 text-xs font-semibold text-theme-900 grid grid-cols-3 gap-4">
+                <div class="flex items-center gap-2"><span>Classe :</span><input type="text" id="p11_classe" class="dot-input"></div>
+                <div class="flex items-center gap-2"><span>Sujet de la production :</span><input type="text" id="p11_sujet" class="dot-input"></div>
+                <div class="flex items-center gap-2"><span>Barème total :</span><input type="text" id="p11_bareme" class="dot-input"></div>
+            </div>
+
+            <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white mb-5">
+                <table class="w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center">
+                            <th class="p-2 border-r border-theme-400 w-40">Critère</th>
+                            <th class="p-2 border-r border-theme-400">Indicateurs</th>
+                            <th class="p-2 border-r border-theme-400 w-20">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-theme-200">
+                        <tr class="h-14"><td class="p-2 border-r border-theme-200 font-semibold text-theme-900 bg-theme-50">Adéquation / Pertinence</td><td class="p-2 border-r border-theme-200"><input type="text" id="p11_c1_ind" class="dot-input"></td><td class="p-2"><input type="text" id="p11_c1_pts" class="dot-input text-center"></td></tr>
+                        <tr class="h-14"><td class="p-2 border-r border-theme-200 font-semibold text-theme-900 bg-theme-50">Cohérence / Organisation</td><td class="p-2 border-r border-theme-200"><input type="text" id="p11_c2_ind" class="dot-input"></td><td class="p-2"><input type="text" id="p11_c2_pts" class="dot-input text-center"></td></tr>
+                        <tr class="h-14"><td class="p-2 border-r border-theme-200 font-semibold text-theme-900 bg-theme-50">Correction linguistique</td><td class="p-2 border-r border-theme-200"><input type="text" id="p11_c3_ind" class="dot-input"></td><td class="p-2"><input type="text" id="p11_c3_pts" class="dot-input text-center"></td></tr>
+                        <tr class="h-14"><td class="p-2 border-r border-theme-200 font-semibold text-theme-900 bg-theme-50">Richesse lexicale</td><td class="p-2 border-r border-theme-200"><input type="text" id="p11_c4_ind" class="dot-input"></td><td class="p-2"><input type="text" id="p11_c4_pts" class="dot-input text-center"></td></tr>
+                        <tr class="h-14"><td class="p-2 border-r border-theme-200 font-semibold text-theme-900 bg-theme-50">Présentation / Lisibilité</td><td class="p-2 border-r border-theme-200"><input type="text" id="p11_c5_ind" class="dot-input"></td><td class="p-2"><input type="text" id="p11_c5_pts" class="dot-input text-center"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-box p-4 mb-5">
+                <div class="section-badge">
+                    <i class="fa-solid fa-microphone-lines text-xs"></i>
+                    <span>GRILLE COMPLÉMENTAIRE — EXPRESSION ORALE</span>
+                </div>
+                <div class="grid grid-cols-4 gap-2 pt-2 text-[11px] font-semibold text-theme-900 text-center">
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Fluidité / Débit</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Prononciation / Intonation</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Correction de la langue</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Contenu / Pertinence</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 12: BANQUE D'ERREURS RÉCURRENTES & REMÉDIATION LINGUISTIQUE -->
+        <div id="page-12" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-4">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Banque d'erreurs récurrentes</h1>
+                <p class="text-xs text-slate-500">Remédiation linguistique — Erreurs fréquentes relevées dans les productions des élèves</p>
+            </div>
+
+            <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white">
+                <table class="w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center">
+                            <th class="p-2 border-r border-theme-400 w-36">Type d'erreur</th>
+                            <th class="p-2 border-r border-theme-400">Exemple relevé chez l'élève</th>
+                            <th class="p-2 border-r border-theme-400">Règle à rappeler</th>
+                            <th class="p-2 w-44">Activité de remédiation</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-theme-200">
+                        <tr class="h-20"><td class="p-1 border-r border-theme-200"><input type="text" id="p12_e1_type" class="dot-input"></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e1_exemple" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e1_regle" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1"><textarea id="p12_e1_activite" class="dot-textarea h-16 text-xs"></textarea></td></tr>
+                        <tr class="h-20"><td class="p-1 border-r border-theme-200"><input type="text" id="p12_e2_type" class="dot-input"></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e2_exemple" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e2_regle" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1"><textarea id="p12_e2_activite" class="dot-textarea h-16 text-xs"></textarea></td></tr>
+                        <tr class="h-20"><td class="p-1 border-r border-theme-200"><input type="text" id="p12_e3_type" class="dot-input"></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e3_exemple" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e3_regle" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1"><textarea id="p12_e3_activite" class="dot-textarea h-16 text-xs"></textarea></td></tr>
+                        <tr class="h-20"><td class="p-1 border-r border-theme-200"><input type="text" id="p12_e4_type" class="dot-input"></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e4_exemple" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e4_regle" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1"><textarea id="p12_e4_activite" class="dot-textarea h-16 text-xs"></textarea></td></tr>
+                        <tr class="h-20"><td class="p-1 border-r border-theme-200"><input type="text" id="p12_e5_type" class="dot-input"></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e5_exemple" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1 border-r border-theme-200"><textarea id="p12_e5_regle" class="dot-textarea h-16 text-xs"></textarea></td><td class="p-1"><textarea id="p12_e5_activite" class="dot-textarea h-16 text-xs"></textarea></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-box p-4 mt-5">
+                <div class="section-badge">
+                    <i class="fa-solid fa-tags text-xs"></i>
+                    <span>CATÉGORIES COURANTES À SURVEILLER</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 pt-2 text-[11px] font-semibold text-theme-900">
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Accord sujet-verbe</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Concordance des temps</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Emploi des articulateurs</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Confusion homophones</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Ponctuation</div>
+                    <div class="chip bg-blue-50 text-blue-700 border-blue-200 justify-center py-1.5">Interférences langue maternelle</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 13: SUIVI DE L'ORAL & EXPOSÉS -->
+        <div id="page-13" class="a4-page relative bg-white w-[210mm] min-h-[297mm] mx-auto p-8 rounded-2xl shadow-2xl border border-blue-100 overflow-hidden bg-floral-watermark hidden">
+            <div class="relative text-center pt-2 mb-4">
+                <h1 class="font-cursive text-5xl text-theme-800 font-bold mb-1">Suivi de l'oral &amp; des exposés</h1>
+                <p class="text-xs text-slate-500">Prises de parole, exposés, débats et jeux de rôle</p>
+            </div>
+
+            <div class="section-box p-3 mb-4 text-xs font-semibold text-theme-900 grid grid-cols-3 gap-4">
+                <div class="flex items-center gap-2"><span>Classe :</span><input type="text" id="p13_classe" class="dot-input"></div>
+                <div class="flex items-center gap-2"><span>Trimestre :</span><input type="text" id="p13_trimestre" class="dot-input"></div>
+                <div class="flex items-center gap-2"><span>Thématique des exposés :</span><input type="text" id="p13_thematique" class="dot-input"></div>
+            </div>
+
+            <div class="border-2 border-theme-300 rounded-2xl overflow-hidden shadow-sm bg-white mb-5">
+                <table class="w-full text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-theme-700 via-theme-600 to-theme-700 text-white font-bold text-center">
+                            <th class="p-2 border-r border-theme-400 w-36">Élève / Groupe</th>
+                            <th class="p-2 border-r border-theme-400">Sujet de l'exposé</th>
+                            <th class="p-2 border-r border-theme-400 w-24">Date</th>
+                            <th class="p-2 border-r border-theme-400 w-20">Fluidité</th>
+                            <th class="p-2 border-r border-theme-400 w-24">Prononciation</th>
+                            <th class="p-2 border-r border-theme-400 w-20">Contenu</th>
+                            <th class="p-2 w-16">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-theme-200">
+                        <tr class="h-14"><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r1_eleve" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r1_sujet" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r1_date" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r1_fluidite" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r1_prononciation" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r1_contenu" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p13_r1_note" class="dot-input text-center"></td></tr>
+                        <tr class="h-14"><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r2_eleve" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r2_sujet" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r2_date" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r2_fluidite" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r2_prononciation" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r2_contenu" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p13_r2_note" class="dot-input text-center"></td></tr>
+                        <tr class="h-14"><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r3_eleve" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r3_sujet" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r3_date" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r3_fluidite" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r3_prononciation" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r3_contenu" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p13_r3_note" class="dot-input text-center"></td></tr>
+                        <tr class="h-14"><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r4_eleve" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r4_sujet" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r4_date" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r4_fluidite" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r4_prononciation" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r4_contenu" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p13_r4_note" class="dot-input text-center"></td></tr>
+                        <tr class="h-14"><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r5_eleve" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r5_sujet" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r5_date" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r5_fluidite" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r5_prononciation" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r5_contenu" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p13_r5_note" class="dot-input text-center"></td></tr>
+                        <tr class="h-14"><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r6_eleve" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r6_sujet" class="dot-input"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r6_date" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r6_fluidite" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r6_prononciation" class="dot-input text-center"></td><td class="p-1 border-r border-theme-200"><input type="text" id="p13_r6_contenu" class="dot-input text-center"></td><td class="p-1"><input type="text" id="p13_r6_note" class="dot-input text-center"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-box p-4">
+                <div class="section-badge">
+                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                    <span>SUJETS PROPOSÉS / OBSERVATIONS GÉNÉRALES</span>
+                </div>
+                <textarea id="p13_sujets_obs" class="dot-textarea h-20 text-xs mt-2"></textarea>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="no-print fixed bottom-5 left-5 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- Custom Confirmation Modal (Replaces native confirm) -->
+    <div id="confirm-modal" class="no-print fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl border border-blue-100 transform scale-95 transition-transform">
+            <h4 class="font-bold text-slate-800 text-sm mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-circle-question text-blue-600 text-base"></i> Confirmation
+            </h4>
+            <p id="confirm-modal-text" class="text-xs text-slate-600 mb-5 leading-relaxed"></p>
+            <div class="flex justify-end gap-2 text-xs font-semibold">
+                <button id="confirm-modal-cancel" class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Annuler</button>
+                <button id="confirm-modal-ok" class="px-4 py-2 rounded-xl bg-rose-600 text-white hover:bg-rose-700 shadow-md transition">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        /* ... existing code ... */
+        let currentTab = 0; // Page 0 = Page de Garde
 
-        // Reliable PDF Export Functions with error handling and button unlock
-        async function exportPagePDF(evt) {
-            const btn = (evt && (evt.currentTarget || evt.target)) ? (evt.currentTarget || evt.target) : document.activeElement;
-            let origHTML = '';
-            if (btn && btn.tagName === 'BUTTON') {
-                origHTML = btn.innerHTML;
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Génération...';
-            }
-
-            try {
-                const pageElem = document.querySelector(`.a4-page[data-page="${currentPage}"]`);
-                if (!pageElem) throw new Error("Page non trouvée");
-
-                const clone = pageElem.cloneNode(true);
-                clone.style.margin = '0';
-                clone.style.boxShadow = 'none';
-
-                const container = document.createElement('div');
-                container.style.position = 'fixed';
-                container.style.left = '-9999px';
-                container.style.top = '0';
-                container.style.width = '210mm';
-                container.appendChild(clone);
-                document.body.appendChild(container);
-
-                const pageTitle = pagesConfig[currentPage]?.title || `Page_${currentPage + 1}`;
-                const opt = {
-                    margin: 0,
-                    filename: `Cahier_Journal_Page_${currentPage + 1}_${pageTitle.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, logging: false },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-
-                await html2pdf().set(opt).from(clone).save();
-                document.body.removeChild(container);
-                showToast("PDF de la page téléchargé avec succès !", "success");
-            } catch (err) {
-                console.error(err);
-                showToast("Erreur lors de l'exportation du PDF", "error");
-            } finally {
-                if (btn && btn.tagName === 'BUTTON') {
-                    btn.disabled = false;
-                    btn.innerHTML = origHTML;
-                }
-            }
+        // UI Toast Helper
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColors = {
+                info: 'bg-slate-900 text-white',
+                success: 'bg-emerald-600 text-white',
+                warning: 'bg-amber-600 text-white',
+                error: 'bg-rose-600 text-white'
+            };
+            toast.className = `${bgColors[type] || bgColors.info} text-xs font-semibold px-4 py-3 rounded-xl shadow-xl flex items-center gap-2.5 transition-all duration-300 pointer-events-auto transform translate-y-2 opacity-0`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
         }
 
-        async function exportAllPDF(evt) {
-            const btn = (evt && (evt.currentTarget || evt.target)) ? (evt.currentTarget || evt.target) : document.activeElement;
-            let origHTML = '';
-            if (btn && btn.tagName === 'BUTTON') {
-                origHTML = btn.innerHTML;
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Export complet...';
-            }
+        // Custom Confirm Modal
+        function showConfirm(msg, onConfirm) {
+            const modal = document.getElementById('confirm-modal');
+            const text = document.getElementById('confirm-modal-text');
+            const btnOk = document.getElementById('confirm-modal-ok');
+            const btnCancel = document.getElementById('confirm-modal-cancel');
+            text.textContent = msg;
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+            }, 10);
 
-            try {
-                const pages = document.querySelectorAll('.a4-page');
-                const container = document.createElement('div');
-                container.style.position = 'fixed';
-                container.style.left = '-9999px';
-                container.style.top = '0';
-                container.style.width = '210mm';
+            const cleanup = () => {
+                modal.classList.add('opacity-0');
+                modal.querySelector('div').classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 200);
+            };
 
-                pages.forEach((p, idx) => {
-                    const clone = p.cloneNode(true);
-                    clone.style.display = 'flex';
-                    clone.style.margin = '0';
-                    clone.style.boxShadow = 'none';
-                    if (idx < pages.length - 1) {
-                        clone.style.pageBreakAfter = 'always';
-                        clone.style.breakAfter = 'page';
+            btnOk.onclick = () => {
+                cleanup();
+                onConfirm();
+            };
+            btnCancel.onclick = cleanup;
+        }
+
+        // Switch tabs (Page 0 to Page 13)
+        function switchTab(pageNum) {
+            currentTab = pageNum;
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            const pages = document.querySelectorAll('.a4-page');
+
+            if (pageNum === 'all') {
+                document.getElementById('tab-all').classList.add('active');
+                pages.forEach(page => page.classList.remove('hidden'));
+            } else {
+                const targetTab = document.getElementById(`tab-${pageNum}`);
+                if (targetTab) targetTab.classList.add('active');
+                pages.forEach((page) => {
+                    if (page.id === `page-${pageNum}`) {
+                        page.classList.remove('hidden');
+                        page.classList.add('active-page');
+                    } else {
+                        page.classList.add('hidden');
+                        page.classList.remove('active-page');
                     }
-                    container.appendChild(clone);
                 });
+            }
+        }
 
-                document.body.appendChild(container);
-
-                const opt = {
-                    margin: 0,
-                    filename: 'Cahier_Journal_Complet.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, logging: false },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    pagebreak: { mode: ['css', 'legacy'] }
-                };
-
-                await html2pdf().set(opt).from(container).save();
-                document.body.removeChild(container);
-                showToast("Cahier journal complet téléchargé en PDF !", "success");
-            } catch (err) {
-                console.error(err);
-                showToast("Erreur lors de la génération du PDF complet", "error");
-            } finally {
-                if (btn && btn.tagName === 'BUTTON') {
-                    btn.disabled = false;
-                    btn.innerHTML = origHTML;
+        function setValue(id, value) {
+            const el = document.getElementById(id);
+            if (el) {
+                if (el.type === 'checkbox') {
+                    el.checked = Boolean(value);
+                } else {
+                    el.value = value;
                 }
             }
         }
+
+        function clearAllForms() {
+            showConfirm("Voulez-vous vraiment effacer tous les champs de saisie du cahier journal ?", () => {
+                const inputs = document.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    if (input.type === 'checkbox') {
+                        input.checked = false;
+                    } else if (input.id !== 'p0_annee_scolaire') {
+                        input.value = '';
+                    }
+                });
+                localStorage.removeItem('cahier_journal_vierge_data');
+                showToast("Toutes les pages ont été remises à zéro.", 'info');
+            });
+        }
+
+        function saveToLocalStorage() {
+            const data = {};
+            document.querySelectorAll('input, textarea').forEach(el => {
+                if (el.id) {
+                    if (el.type === 'checkbox') {
+                        data[el.id] = el.checked;
+                    } else {
+                        data[el.id] = el.value;
+                    }
+                }
+            });
+            localStorage.setItem('cahier_journal_vierge_data', JSON.stringify(data));
+            showToast("Votre cahier journal a été sauvegardé localement !", 'success');
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('cahier_journal_vierge_data');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    Object.keys(data).forEach(id => {
+                        setValue(id, data[id]);
+                    });
+                } catch (e) {
+                    console.error("Erreur de chargement", e);
+                }
+            }
+        }
+
+        function printCurrentPage() {
+            window.print();
+        }
+
+        function printAllPages() {
+            switchTab('all');
+            setTimeout(() => {
+                window.print();
+            }, 250);
+        }
+
+        // Sync input values with DOM attributes before rendering canvas/pdf
+        function prepareElementsForExport(container) {
+            container.querySelectorAll('textarea').forEach(ta => {
+                ta.textContent = ta.value;
+            });
+            container.querySelectorAll('input[type="text"], input[type="email"]').forEach(inp => {
+                inp.setAttribute('value', inp.value);
+            });
+            container.querySelectorAll('input[type="checkbox"]').forEach(chk => {
+                if (chk.checked) {
+                    chk.setAttribute('checked', 'checked');
+                } else {
+                    chk.removeAttribute('checked');
+                }
+            });
+        }
+
+        async function exportPagePDF() {
+            let targetPage;
+            let pageName = "";
+            if (currentTab === 'all') {
+                targetPage = document.getElementById('page-0');
+                pageName = "Page_Garde";
+            } else {
+                targetPage = document.getElementById(`page-${currentTab}`);
+                pageName = `Page_${currentTab}`;
+            }
+
+            if (!targetPage) return;
+
+            showToast("Génération du fichier PDF pour la page active...", "info");
+            prepareElementsForExport(targetPage);
+
+            const opt = {
+                margin: 0,
+                filename: `Cahier_Journal_${pageName}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true, 
+                    logging: false,
+                    letterRendering: true,
+                    scrollX: 0,
+                    scrollY: 0
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+
+            try {
+                await html2pdf().set(opt).from(targetPage).save();
+                showToast("Page enregistrée en PDF avec succès !", "success");
+            } catch (err) {
+                console.error("Erreur PDF:", err);
+                showToast("Erreur lors de la génération PDF. Basculement vers l'impression...", "error");
+                printCurrentPage();
+            }
+        }
+
+        async function exportAllPDF() {
+            showToast("Préparation du PDF complet (14 pages)... Veuillez patienter.", "info");
+            
+            const pages = document.querySelectorAll('.a4-page');
+            const originalDisplayStates = [];
+            const container = document.getElementById('cahier-container');
+            
+            // Temporarily remove space-y gaps between pages for seamless PDF pagebreaks
+            container.classList.remove('space-y-8');
+            container.classList.add('space-y-0');
+
+            // Show all pages temporarily for rendering
+            pages.forEach((p, idx) => {
+                originalDisplayStates[idx] = p.classList.contains('hidden');
+                p.classList.remove('hidden');
+            });
+
+            prepareElementsForExport(container);
+
+            const opt = {
+                margin: 0,
+                filename: 'Cahier_Journal_Complet_Enseignant.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true, 
+                    logging: false,
+                    letterRendering: true,
+                    scrollX: 0,
+                    scrollY: 0
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['css', 'legacy'] }
+            };
+
+            try {
+                await html2pdf().set(opt).from(container).save();
+                showToast("Cahier Journal complet téléchargé au format PDF !", "success");
+            } catch (err) {
+                console.error("Erreur PDF:", err);
+                showToast("Erreur lors de l'exportation complète.", "error");
+            } finally {
+                // Restore container vertical gaps
+                container.classList.remove('space-y-0');
+                container.classList.add('space-y-8');
+
+                // Restore tabs display state
+                if (currentTab !== 'all') {
+                    pages.forEach((p, idx) => {
+                        if (originalDisplayStates[idx]) {
+                            p.classList.add('hidden');
+                        }
+                    });
+                }
+            }
+        }
+
+        // Fill complete sample model for Secondary School French Teacher (1AS / 2AS / 3AS)
+        function fillFrenchSecondaryDemo() {
+            showConfirm("Voulez-vous remplir automatiquement toutes les pages avec un modèle type Enseignant de Français au Secondaire (1AS, 2AS, 3AS) ?", () => {
+                // Page 0
+                setValue('p0_enseignante', 'Mme BENALI Souad');
+                setValue('p0_annee_scolaire', '2026 - 2027');
+
+                // Page 1
+                setValue('p1_nom_prenom', 'BENALI Souad');
+                setValue('p1_date_naissance', '18/04/1986 à Alger');
+                setValue('p1_adresse_1', 'Cité des 500 Logements, Bt 04, N° 12');
+                setValue('p1_adresse_2', 'El Biar, Alger');
+                setValue('p1_telephone', '06 61 23 45 67');
+                setValue('p1_email', 's.benali@education.dz');
+                setValue('p1_matricule', 'ENS-SEC-2010-8842');
+                setValue('p1_date_recrutement', '15/09/2010');
+                setValue('p1_corps', 'Enseignant de l\'Enseignement Secondaire');
+                setValue('p1_grade', 'Professeur Principal');
+                setValue('p1_fonction', 'Enseignante de Français');
+                setValue('p1_matiere', 'Langue Française');
+                setValue('p1_niveaux', '1AS, 2AS (L-Ph), 3AS (SE / GE)');
+                setValue('p1_etablissement', 'Lycée Ibn Khaldoun');
+                setValue('p1_commune', 'El Biar');
+                setValue('p1_wilaya', 'Alger');
+                setValue('p1_anciennete_gen', '16 ans');
+                setValue('p1_anciennete_poste', '8 ans');
+                setValue('p1_diplomes', 'Master en Didactique du FLE & Littérature');
+                setValue('p1_etab_formation', 'ENS Bouzaréah, Alger');
+                setValue('p1_annee_scolaire', '2026 - 2027');
+                setValue('p1_acc_nom', 'M. KHALDI Sofiane');
+                setValue('p1_acc_fonction', 'Professeur Formateur');
+                setValue('p1_acc_matiere', 'Français');
+                setValue('p1_acc_tel', '05 50 12 34 56');
+                setValue('p1_obs_1', 'Coordination régulière de la cellule de matière.');
+                setValue('p1_obs_2', 'Utilisation des supports audiovisuels et intégration des TICE en classe.');
+                setValue('p1_obs_3', 'Animation de l\'atelier d\'écriture et du club de lecture au lycée.');
+
+                // Page 2 & 3
+                setValue('p2_etablissement', 'Lycée Ibn Khaldoun');
+                setValue('p2_annee', '2026 - 2027');
+                setValue('p2_enseignant', 'Mme BENALI Souad');
+                setValue('p2_classe', '3AS SE / 2AS L-Ph / 1AS TC L');
+
+                setValue('p2_dim_1', '3AS SE (Compr. écrit)');
+                setValue('p2_dim_2', '2AS L-Ph (Point de langue)');
+                setValue('p2_dim_3', '1AS TC L (Prod. écrite)');
+                setValue('p2_dim_5', '3AS GE (Compr. oral)');
+
+                setValue('p3_etablissement', 'Lycée Ibn Khaldoun');
+                setValue('p3_enseignante', 'Mme BENALI Souad');
+                setValue('p3_directeur', 'M. HAMDI Rachid');
+                setValue('p3_r1_c1', '3AS SE - Salle 08');
+                setValue('p3_r1_c2', '2AS L-Ph - Salle 12');
+                setValue('p3_r1_c3', 'Réunion Cellule');
+                setValue('p3_r1_c4', '1AS TC L - Salle 04');
+                setValue('p3_r1_c5', '3AS GE - Salle 08');
+
+                // Page 4
+                setValue('p4_vac1_debut', '29/10/2026'); setValue('p4_vac1_fin', '03/11/2026'); setValue('p4_vac1_nb', '5 jours');
+                setValue('p4_vac2_debut', '17/12/2026'); setValue('p4_vac2_fin', '03/01/2027'); setValue('p4_vac2_nb', '15 jours');
+                setValue('p4_vac3_debut', '18/03/2027'); setValue('p4_vac3_fin', '04/04/2027'); setValue('p4_vac3_nb', '15 jours');
+                setValue('p4_vac4_debut', '08/07/2027'); setValue('p4_vac4_fin', '31/08/2027'); setValue('p4_vac4_nb', '54 jours');
+                setValue('p4_comp_1', 'Du 29/11/2026 au 03/12/2026');
+                setValue('p4_comp_2', 'Du 28/02/2027 au 04/03/2027');
+                setValue('p4_comp_3', 'Du 16/05/2027 au 20/05/2027 (Classes d\'examen : BACCALAURÉAT)');
+
+                // Page 5
+                setValue('p5_sem1_date', '12/10/2026');
+                setValue('p5_sem1_theme', 'L\'approche par compétences dans l\'enseignement des textes d\'histoire au secondaire (3AS)');
+                setValue('p5_sem1_org', 'Inspecteur de la Circonscription');
+                setValue('p5_sem1_lieu', 'Lycée Hassiba Ben Bouali');
+                setValue('p5_sem1_duree', '1 Journée');
+                setValue('p5_sem1_pts', '1. Exploitation Didactique de l\'archive d\'histoire.\n2. Formulation des objectifs opérationnels.\n3. La technique du compte rendu objectif et critique.');
+                setValue('p5_sem1_obs', 'Support distribué intégré aux fiches de 3AS.');
+
+                // Page 6 (Extended 15 rows table)
+                setValue('p6_r1_date', '20/09/2026'); setValue('p6_r1_classe', '3AS SE'); setValue('p6_r1_heure', '08:00 - 09:00');
+                setValue('p6_r1_travail', 'Évaluation diagnostique : Lecture analytique d\'un texte informatif à visée explicative.'); setValue('p6_r1_obs', 'Acquis globaux satisfaisants.');
+
+                setValue('p6_r2_date', '20/09/2026'); setValue('p6_r2_classe', '2AS L-Ph'); setValue('p6_r2_heure', '09:00 - 10:00');
+                setValue('p6_r2_travail', 'Projet 1 / Séq 1 : Lancement de la séquence. Compréhension de l\'oral : Écoute du discours exhortatif.'); setValue('p6_r2_obs', 'Participation active.');
+
+                setValue('p6_r3_date', '21/09/2026'); setValue('p6_r3_classe', '1AS TC L'); setValue('p6_r3_heure', '10:00 - 11:00');
+                setValue('p6_r3_travail', 'Compréhension de l\'écrit : Étude d\'un texte vulgarisé « La biodiversité en danger ».'); setValue('p6_r3_obs', 'Vocabulaire à renforcer.');
+
+                setValue('p6_r4_date', '22/09/2026'); setValue('p6_r4_classe', '3AS SE'); setValue('p6_r4_heure', '08:00 - 09:00');
+                setValue('p6_r4_travail', 'Projet 1 (Texte d\'histoire) / Séq 1 : Compréhension de l\'écrit (Texte de Mahfoud Kaddache sur le 1er Novembre 1954).'); setValue('p6_r4_obs', 'Analyse du témoignage.');
+
+                setValue('p6_r5_date', '22/09/2026'); setValue('p6_r5_classe', '3AS SE'); setValue('p6_r5_heure', '09:00 - 10:00');
+                setValue('p6_r5_travail', 'Point de langue : La visée informative et la présence/absence de l\'auteur (L\'objectivité linguistique).'); setValue('p6_r5_obs', 'Exercices d\'application réussis.');
+
+                // Page 7 (Fiche de Préparation - Séance)
+                setValue('p7_seance_num', '01');
+                setValue('p7_date', '22/09/2026');
+                setValue('p7_classe', '3ème Année Secondaire (3AS SE)');
+                setValue('p7_duree', '1 Heure');
+                setValue('p7_projet', 'Projet 1 : Réaliser un dossier documentaire pour informer d\'un fait d\'histoire.');
+                setValue('p7_sequence', 'Séquence 1');
+                setValue('p7_objet_etude', 'Le texte d\'histoire (Fait historique & Témoignage)');
+                setValue('p7_nat_ce', true);
+                setValue('p7_obj_savoir', 'Comprendre la structure d\'un texte historique informatif à visée explicative.');
+                setValue('p7_obj_savoir_faire', 'Dégager la visée communicative et repérer les marques de l\'objectivité/subjectivité.');
+                setValue('p7_obj_savoir_etre', 'Développer un esprit critique face aux témoignages d\'archives historiques.');
+                setValue('p7_sup_manuel', true);
+                setValue('p7_sup_manuel_p', '14-16');
+                setValue('p7_sup_tableau', true);
+                setValue('p7_p1_act', 'Analyse de l\'image d\'archive et de la date (1er Novembre 1954) pour dégager le thème.');
+                setValue('p7_p2_act', 'Lecture silencieuse suivie d\'une lecture magistrale. Repérage des indicateurs temporels et des acteurs.');
+                setValue('p7_p3_act', 'Analyse détaillée des paragraphes : repérage des faits historiques vs opinions de l\'auteur.');
+                setValue('p7_p4_act', 'Élaboration conjointe du plan synthétique au tableau et prise de notes dans les cahiers.');
+                setValue('p7_p5_act', 'Application : Répondre à une question de synthèse pour vérifier la compréhension globale.');
+                setValue('p7_crit_1', 'L\'élève identifie clairement la visée informative du texte d\'histoire.');
+                setValue('p7_crit_2', 'L\'élève distingue le fait historique brut du témoignage inséré.');
+                setValue('p7_crit_3', 'L\'élève reformule l\'idée générale en une phrase correcte.');
+                setValue('p7_diff_text', 'Soutien aux élèves en difficulté par guidage lors de la lecture silencieuse.');
+                setValue('p7_dev_rech', true);
+                setValue('p7_stat_atteint', true);
+                setValue('p7_bilan_notes', 'Séance très dynamique. Bonne participation des élèves lors de la phase d\'analyse.');
+
+                // Page 8
+                setValue('p8_classe', '3AS SE / 2AS L-Ph');
+                setValue('p8_enseignant', 'Mme BENALI Souad');
+                setValue('p8_annee', '2026 - 2027');
+                setValue('p8_s1_nom', 'MEHDI Walid (3AS)');
+                setValue('p8_s1_diff', 'Difficultés majeures en syntaxe et concordance des temps lors de la rédaction du compte rendu.');
+                setValue('p8_s1_actions', 'Exercices de remédiation ciblés sur les verbes de parole, fiches d\'autocorrection et tutorat par les pairs.');
+                setValue('p8_s1_obs', 'Amélioration progressive dans l\'organisation des paragraphes.');
+
+                // Page 9
+                setValue('p9_classe', '3AS (Sciences / L-Ph)');
+                setValue('p9_projet', 'Projet 1 : Réaliser un dossier documentaire pour informer d\'un fait d\'histoire.');
+                setValue('p9_annee', '2026 - 2027');
+                setValue('p9_r1_trim', 'T1'); setValue('p9_r1_seq', 'S1'); setValue('p9_r1_objet', 'Le texte d\'histoire (Fait historique & Témoignage)');
+                setValue('p9_r1_comp', 'Produire un compte rendu objectif d\'un texte d\'histoire en respectant la visée informative.');
+                setValue('p9_r1_support', 'Extrait d\'ouvrage historique (M. Kaddache / A. Yacono)'); setValue('p9_r1_seances', '8 séances'); setValue('p9_r1_eval', 'Compte rendu rédigé');
+
+                setValue('p9_r2_trim', 'T1'); setValue('p9_r2_seq', 'S2'); setValue('p9_r2_objet', 'Le témoignage historique & La visée explicative');
+                setValue('p9_r2_comp', 'Insérer un témoignage dans un fait d\'histoire et analyser la subjectivité de l\'auteur.');
+                setValue('p9_r2_support', 'Témoignage de Zohra Drif / Djamila Bouhired'); setValue('p9_r2_seances', '7 séances'); setValue('p9_r2_eval', 'Production écrite rédigée');
+
+                setValue('p9_r3_trim', 'T2'); setValue('p9_r3_seq', 'S1'); setValue('p9_r3_objet', 'Le débat d\'idées (Texte argumentatif)');
+                setValue('p9_r3_comp', 'Confronter deux thèses opposées et rédiger un texte pour défendre une prise de position.');
+                setValue('p9_r3_support', 'Articles de presse contemporains'); setValue('p9_r3_seances', '9 séances'); setValue('p9_r3_eval', 'Essai / Débat rédigé');
+
+                // Page 10
+                setValue('p10_o1_titre', 'L\'Étranger'); setValue('p10_o1_auteur', 'Albert Camus'); setValue('p10_o1_genre', 'Roman'); setValue('p10_o1_classe', '3AS L-Ph'); setValue('p10_o1_periode', 'Trimestre 1'); setValue('p10_o1_modalite', 'Lecture suivie'); setValue('p10_o1_eval', 'Fiche de lecture & Extrait');
+                setValue('p10_o2_titre', 'Nedjma'); setValue('p10_o2_auteur', 'Kateb Yacine'); setValue('p10_o2_genre', 'Roman'); setValue('p10_o2_classe', '3AS L-Ph'); setValue('p10_o2_periode', 'Trimestre 2'); setValue('p10_o2_modalite', 'Lecture cursive'); setValue('p10_o2_eval', 'Exposé oral');
+                setValue('p10_o3_titre', 'Le Dernier Jour d\'un Condamné'); setValue('p10_o3_auteur', 'Victor Hugo'); setValue('p10_o3_genre', 'Roman engagé'); setValue('p10_o3_classe', '2AS L-Ph'); setValue('p10_o3_periode', 'Trimestre 2'); setValue('p10_o3_modalite', 'Lecture organisée'); setValue('p10_o3_eval', 'Débat littéraire');
+
+                // Page 11
+                setValue('p11_classe', '3AS SE / GE');
+                setValue('p11_sujet', 'Rédiger le compte rendu objectif d\'un texte historique d\'archive.');
+                setValue('p11_bareme', '14 points / 20 (Intégré aux compositions)');
+                setValue('p11_c1_ind', 'Respect du thème historique, de l\'intention de communication et élimination du superflui.'); setValue('p11_c1_pts', '03 pts');
+                setValue('p11_c2_ind', 'Structure en deux parties (Accroche + Résumé), connecteurs chronologiques et logiques.'); setValue('p11_c2_pts', '03 pts');
+                setValue('p11_c3_ind', 'Emploi de la 3ème personne, verbes de parole, concordance des temps et correction de la phrase.'); setValue('p11_c3_pts', '04 pts');
+                setValue('p11_c4_ind', 'Vocabulaire lié à l\'histoire, reformulation personnelle sans plagiat direct.'); setValue('p11_c4_pts', '02 pts');
+                setValue('p11_c5_ind', 'Soin de la copie, lisibilité de l\'écriture, alinéas et ponctuation adéquate.'); setValue('p11_c5_pts', '02 pts');
+
+                // Page 12
+                setValue('p12_e1_type', 'Emploi abusif du « JE » dans le compte rendu objectif');
+                setValue('p12_e1_exemple', '« Dans ce texte, JE pense que l\'auteur parle du 1er Novembre... »');
+                setValue('p12_e1_regle', 'Le compte rendu objectif exige la neutralité absolue et l\'emploi de la 3ème personne (Il/L\'auteur).');
+                setValue('p12_e1_activite', 'Exercice de réécriture neutre : Transformer un paragraphe subjectif en paragraphe objectif.');
+
+                setValue('p12_e2_type', 'Non-respect de la concordance des temps au passé');
+                setValue('p12_e2_exemple', '« L\'auteur a affirmé que le peuple se révolta en 1954 et gagne la guerre. »');
+                setValue('p12_e2_regle', 'Règles du système du passé (Imparfait / Passé simple / Plus-que-parfait) dans le récit historique.');
+                setValue('p12_e2_activite', 'Atelier de conjugaison sur les textes d\'histoire et exercices à trous.');
+
+                // Page 13
+                setValue('p13_classe', '3AS / 2AS'); setValue('p13_trimestre', 'Trimestre 1 & 2'); setValue('p13_thematique', 'Présentation des figures historiques & Débats sociétaux');
+                setValue('p13_r1_eleve', 'Groupe 1 (Yacine, Amine)'); setValue('p13_r1_sujet', 'La bataille d\'Alger : Faits et témoignages'); setValue('p13_r1_date', '15/10/2026'); setValue('p13_r1_fluidite', 'Très bonne'); setValue('p13_r1_prononciation', 'Claire'); setValue('p13_r1_contenu', 'Riche'); setValue('p13_r1_note', '17/20');
+                setValue('p13_r2_eleve', 'Groupe 2 (Lina, Meriem)'); setValue('p13_r2_sujet', 'L\'impact de l\'Intelligence Artificielle sur la lecture'); setValue('p13_r2_date', '12/11/2026'); setValue('p13_r2_fluidite', 'Bonne'); setValue('p13_r2_prononciation', 'Correcte'); setValue('p13_r2_contenu', 'Argumenté'); setValue('p13_r2_note', '16/20');
+
+                saveToLocalStorage();
+                showToast("Cahier journal prérempli avec succès pour le Secondaire (1AS/2AS/3AS) !", "success");
+            });
+        }
+
+        // Auto-load on load
+        window.onload = function() {
+            loadFromLocalStorage();
+        };
     </script>
 </body>
 </html>
