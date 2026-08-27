@@ -414,13 +414,18 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
 .pdf-echo{background-color:transparent}
 </style>
 </head>
-<body><!-- Écran de connexion Google -->
+<body><!-- Écran de connexion Firebase -->
   <div id="zone-connexion" style="text-align: center; padding: 60px 20px; font-family: sans-serif; min-height: 80vh;">
     <h2>Accès restreint — Cahier Journal</h2>
-    <p style="margin-bottom: 24px; color: #555;">Veuillez vous connecter avec votre compte Google pour accéder au document.</p>
-    <button onclick="connexionGoogle()" style="padding: 12px 24px; font-size: 16px; font-weight: bold; cursor: pointer; background-color: #4285F4; color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-      Se connecter avec Google
-    </button>
+    <p style="margin-bottom: 24px; color: #555;">Saisissez vos identifiants pour déverrouiller le document.</p>
+    
+    <div style="max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px;">
+      <input type="email" id="user-email" placeholder="Adresse e-mail" style="padding: 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+      <input type="password" id="user-code" placeholder="Code d'accès" style="padding: 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+      <button onclick="connexionFirebase()" style="padding: 12px 24px; font-size: 16px; font-weight: bold; cursor: pointer; background-color: #4285F4; color: white; border: none; border-radius: 6px;">
+        Se connecter
+      </button>
+    </div>
   </div>
 
   <!-- Début du Cahier Journal protégé -->
