@@ -1,18 +1,41 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cahier Journal — Professeur de Français (Enseignement Secondaire)</title>
-<meta name="description" content="Cahier journal électronique et imprimable A4 pour le professeur de français de l'enseignement secondaire algérien.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Manrope:wght@400;500;600;700;800&family=Parisienne&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" defer></script><!-- SDK Firebase Compat -->
+<!-- SDK Firebase Compat -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBtBaoYGjnaFZ1Urpjy5pXkCQx1Fi_e6I8",
+      authDomain: "cahier-journal-d09f4.firebaseapp.com",
+      projectId: "cahier-journal-d09f4",
+      storageBucket: "cahier-journal-d09f4.firebasestorage.app",
+      messagingSenderId: "526969671930",
+      appId: "1:526969671930:web:1662b8978f2215f9bd3943",
+      measurementId: "G-NNBKHBY26S"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById('zone-protegee').style.display = 'block';
+        document.getElementById('zone-connexion').style.display = 'none';
+      } else {
+        document.getElementById('zone-protegee').style.display = 'none';
+        document.getElementById('zone-connexion').style.display = 'block';
+      }
+    });
+
+    function connexionFirebase() {
+      const email = document.getElementById('user-email').value;
+      const code = document.getElementById('user-code').value;
+
+      firebase.auth().signInWithEmailAndPassword(email, code)
+        .catch((error) => {
+          alert("Erreur de connexion : " + error.message);
+        });
+    }
+  </script>
     const firebaseConfig = {
       apiKey: "AIzaSyBtBaoYGjnaFZ1Urpjy5pXkCQx1Fi_e6I8",
       authDomain: "cahier-journal-d09f4.firebaseapp.com",
