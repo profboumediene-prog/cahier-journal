@@ -51,11 +51,6 @@
       firebase.auth().signInWithPopup(provider).catch((error) => console.error(error));
     }
   </script>
-        document.getElementById('zone-connexion').style.display = 'block';
-      }
-    });
-
-    function connexionGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider).catch((error) => console.error(error));
     }
