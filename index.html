@@ -24,23 +24,11 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // 1. Ajoutez ici la liste des adresses email autorisées
-    const emailsAutorises = [
-      "prof.exemple1@gmail.com",
-      "prof.exemple2@gmail.com"
-    ];
-
     firebase.auth().onAuthStateChanged((user) => {
-      if (user && emailsAutorises.includes(user.email.toLowerCase())) {
-        // Accès accordé : l'email est dans la liste
+      if (user) {
         document.getElementById('zone-protegee').style.display = 'block';
         document.getElementById('zone-connexion').style.display = 'none';
-      } else if (user) {
-        // Accès refusé : l'email n'est pas dans la liste
-        alert("Accès refusé : " + user.email + " n'a pas la permission d'accéder à ce Cahier Journal.");
-        firebase.auth().signOut();
       } else {
-        // Non connecté
         document.getElementById('zone-protegee').style.display = 'none';
         document.getElementById('zone-connexion').style.display = 'block';
       }
@@ -50,6 +38,7 @@
       const provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider).catch((error) => console.error(error));
     }
+  </script>
   </script>
       const provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider).catch((error) => console.error(error));
