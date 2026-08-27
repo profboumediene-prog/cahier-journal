@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cahier Journal — Professeur de Français (Enseignement Secondaire)</title>
-  
-  <!-- SDK Firebase Compat -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cahier Journal — Professeur de Français (Enseignement Secondaire)</title>
+<meta name="description" content="Cahier journal électronique et imprimable A4 pour le professeur de français de l'enseignement secondaire algérien.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Manrope:wght@400;500;600;700;800&family=Parisienne&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" defer></script><!-- SDK Firebase Compat -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
@@ -21,56 +24,33 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        document.getElementById('zone-protegee').style.display = 'block';
-        document.getElementById('zone-connexion').style.display = 'none';
-      } else {
-        document.getElementById('zone-protegee').style.display = 'none';
-        document.getElementById('zone-connexion').style.display = 'block';
-      }
-    });
-
-    function connexionFirebase() {
-      const email = document.getElementById('user-email').value;
-      const code = document.getElementById('user-code').value;
-
-      firebase.auth().signInWithEmailAndPassword(email, code)
-        .catch((error) => {
-          alert("E-mail ou code d'accès incorrect !");
-        });
-    }
-  </script>
-</head>
-
-      firebase.auth().signInWithEmailAndPassword(email, code)
-        .catch((error) => {
-          alert("Erreur de connexion : " + error.message);
-        });
-    }
-  </script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBtBaoYGjnaFZ1Urpjy5pXkCQx1Fi_e6I8",
-      authDomain: "cahier-journal-d09f4.firebaseapp.com",
-      projectId: "cahier-journal-d09f4",
-      storageBucket: "cahier-journal-d09f4.firebasestorage.app",
-      messagingSenderId: "526969671930",
-      appId: "1:526969671930:web:1662b8978f2215f9bd3943",
-      measurementId: "G-NNBKHBY26S"
-    };
-    firebase.initializeApp(firebaseConfig);
+    // 1. Ajoutez ici la liste des adresses email autorisées
+    const emailsAutorises = [
+      "prof.exemple1@gmail.com",
+      "prof.exemple2@gmail.com"
+    ];
 
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
+      if (user && emailsAutorises.includes(user.email.toLowerCase())) {
+        // Accès accordé : l'email est dans la liste
         document.getElementById('zone-protegee').style.display = 'block';
         document.getElementById('zone-connexion').style.display = 'none';
+      } else if (user) {
+        // Accès refusé : l'email n'est pas dans la liste
+        alert("Accès refusé : " + user.email + " n'a pas la permission d'accéder à ce Cahier Journal.");
+        firebase.auth().signOut();
       } else {
+        // Non connecté
         document.getElementById('zone-protegee').style.display = 'none';
         document.getElementById('zone-connexion').style.display = 'block';
       }
     });
 
     function connexionGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).catch((error) => console.error(error));
+    }
+  </script>
       const provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider).catch((error) => console.error(error));
     }
@@ -450,18 +430,13 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
 .pdf-echo{background-color:transparent}
 </style>
 </head>
-<body><!-- Écran de connexion Firebase -->
+<body><!-- Écran de connexion Google -->
   <div id="zone-connexion" style="text-align: center; padding: 60px 20px; font-family: sans-serif; min-height: 80vh;">
     <h2>Accès restreint — Cahier Journal</h2>
-    <p style="margin-bottom: 24px; color: #555;">Saisissez vos identifiants pour déverrouiller le document.</p>
-    
-    <div style="max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px;">
-      <input type="email" id="user-email" placeholder="Adresse e-mail" style="padding: 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
-      <input type="password" id="user-code" placeholder="Code d'accès" style="padding: 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
-      <button onclick="connexionFirebase()" style="padding: 12px 24px; font-size: 16px; font-weight: bold; cursor: pointer; background-color: #4285F4; color: white; border: none; border-radius: 6px;">
-        Se connecter
-      </button>
-    </div>
+    <p style="margin-bottom: 24px; color: #555;">Veuillez vous connecter avec votre compte Google pour accéder au document.</p>
+    <button onclick="connexionGoogle()" style="padding: 12px 24px; font-size: 16px; font-weight: bold; cursor: pointer; background-color: #4285F4; color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+      Se connecter avec Google
+    </button>
   </div>
 
   <!-- Début du Cahier Journal protégé -->
