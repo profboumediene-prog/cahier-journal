@@ -8,53 +8,47 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Manrope:wght@400;500;600;700;800&family=Parisienne&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" defer></script><!-- SDK Firebase Compat -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" defer></script>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBtBaoYGjnaFZ1Urpjy5pXkCQx1Fi_e6I8",
-      authDomain: "cahier-journal-d09f4.firebaseapp.com",
-      projectId: "cahier-journal-d09f4",
-      storageBucket: "cahier-journal-d09f4.firebasestorage.app",
-      messagingSenderId: "526969671930",
-      appId: "1:526969671930:web:1662b8978f2215f9bd3943",
-      measurementId: "G-NNBKHBY26S"
-    };
-    firebase.initializeApp(firebaseConfig);
+<!-- SDK Firebase Compat -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
-    // 1. Ajoutez ici la liste des adresses email autorisées
-    const emailsAutorises = [
-      "prof.exemple1@gmail.com",
-      "prof.exemple2@gmail.com"
-    ];
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCEs9ECiK8B5sBa5t-8ige1UipR2UeV_T0",
+    authDomain: "cahier-journal-26-27.firebaseapp.com",
+    projectId: "cahier-journal-26-27",
+    storageBucket: "cahier-journal-26-27.firebasestorage.app",
+    messagingSenderId: "640606456487",
+    appId: "1:640606456487:web:8444d7761c7cc15519a982",
+    measurementId: "G-QVFVEP32NS"
+  };
+  firebase.initializeApp(firebaseConfig);
 
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user && emailsAutorises.includes(user.email.toLowerCase())) {
-        // Accès accordé : l'email est dans la liste
-        document.getElementById('zone-protegee').style.display = 'block';
-        document.getElementById('zone-connexion').style.display = 'none';
-      } else if (user) {
-        // Accès refusé : l'email n'est pas dans la liste
-        alert("Accès refusé : " + user.email + " n'a pas la permission d'accéder à ce Cahier Journal.");
-        firebase.auth().signOut();
-      } else {
-        // Non connecté
-        document.getElementById('zone-protegee').style.display = 'none';
-        document.getElementById('zone-connexion').style.display = 'block';
-      }
-    });
-
-    function connexionGoogle() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider).catch((error) => console.error(error));
+  // Vérification de la session utilisateur
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      document.getElementById('zone-protegee').style.display = 'block';
+      document.getElementById('zone-connexion').style.display = 'none';
+    } else {
+      document.getElementById('zone-protegee').style.display = 'none';
+      document.getElementById('zone-connexion').style.display = 'block';
     }
-  </script>
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider).catch((error) => console.error(error));
-    }
-  </script>
+  });
+
+  // Fonction de connexion avec E-mail et Code d'accès
+  function connexionFirebase() {
+    const email = document.getElementById('user-email').value;
+    const code = document.getElementById('user-code').value;
+
+    firebase.auth().signInWithEmailAndPassword(email, code)
+      .catch((error) => {
+        alert("Accès refusé : e-mail ou code d'accès incorrect !");
+      });
+  }
+</script>
+
 <style>
 /* =====================================================================
    CAHIER JOURNAL — FRANÇAIS / SECONDAIRE (Algérie)
@@ -64,7 +58,6 @@
    ===================================================================== */
 
 :root{
-  /* Nouvelle palette colorée et féminine */
   --ink: #3a1c28;
   --v900: #5c1e34;
   --v800: #7a2342;
@@ -98,7 +91,6 @@ html,body{margin:0;padding:0}
 body{
   font-family:var(--body);
   color:var(--ink);
-  /* Fond global adouci avec des tons pêche/rose clair */
   background:
     radial-gradient(1200px 600px at 50% -10%, #fff0f4 0%, transparent 60%),
     #fbf5f6;
@@ -161,7 +153,6 @@ p{margin:0}
 }
 .sheet.hidden{display:none}
 
-/* Encadré chic de page : double filet fin (or + prune) avec léger espace, façon papeterie de luxe */
 .sheet::before{
   content:"";position:absolute;inset:5mm;border:1px solid var(--v300);border-radius:2px;pointer-events:none;
   box-shadow:0 0 0 3.2px #fff, 0 0 0 4px var(--v100);
@@ -245,7 +236,6 @@ table.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .pause td{background:repeating-linear-gradient(135deg,var(--v50),var(--v50) 6px,#fff 6px,#fff 12px);
   text-align:center;font-size:7.5pt;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--v400)}
 
-/* Tableau dense (liste des élèves) */
 .tbl--dense tbody td{padding:.4mm .6mm}
 .tbl--dense thead th{
   padding:1.3mm .8mm;font-size:6.4pt;font-weight:500;letter-spacing:.01em;
@@ -255,7 +245,6 @@ table.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .tbl--dense .line{padding:0 2px;line-height:1.25}
 .line--moy{font-weight:800;color:var(--v700)}
 
-/* Grille façon « planner » (page emploi du temps hebdomadaire) */
 .planner td{padding:1.2mm}
 .planner .cell{
   border:1px solid var(--v200);border-radius:6px;background:#fff;height:100%;width:100%;
@@ -284,7 +273,6 @@ table.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .sign p{font-size:8.5pt;font-weight:700;color:var(--v800);margin-bottom:1mm}
 .sign div{height:13mm;border-bottom:1px dotted var(--v300)}
 
-/* Neutralisation du style « tableau » dans le planner */
 .planner tbody td{border:0;padding:0}
 .planner tbody tr{background:transparent!important}
 .planner thead th{border-right:0}
@@ -382,17 +370,11 @@ table.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .task input[type="checkbox"]{width:12px;height:12px;flex:none;margin:0;accent-color:var(--v600);cursor:pointer}
 .task .line{border-bottom-style:dotted}
 
-/* ------------------------ PAPILLONS & NŒUD PAPILLON ------------------------
-   Papillons discrets et nœud papillon (page de garde uniquement) : dessins
-   vectoriels posés SOUS le contenu (z-index 0) pour ne jamais gêner
-   l'écriture.
-   --------------------------------------------------------------------- */
 .sheet > .orn{position:absolute;z-index:0;pointer-events:none;display:block}
 .orn--fly1{width:13mm;height:9.8mm;top:15mm;right:14mm;opacity:.95}
 .orn--fly2{width:10mm;height:7.5mm;bottom:17mm;left:11mm;opacity:.85;transform:scaleX(-1)}
 .cover .orn--fly1{width:16mm;height:12mm;top:104mm;right:30mm}
 .cover .orn--fly2{width:12mm;height:9mm;top:128mm;left:32mm;opacity:.95}
-/* Nœud papillon (ruban) de la page de garde, perché tout en haut, au-dessus du texte */
 .orn--bow{width:19mm;height:12mm;top:1.5mm;left:50%;transform:translateX(-50%);z-index:2;opacity:1}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -419,7 +401,6 @@ body.exporting .sheet{
   margin:0!important;border-radius:0!important;box-shadow:none!important;
   page-break-before:always;break-before:page;page-break-inside:avoid;break-inside:avoid}
 body.exporting .line,body.exporting .area,body.exporting .cell{background-color:transparent!important}
-/* Repli : aucun dégradé, uniquement des aplats — capture toujours possible */
 body.exporting-flat *,body.exporting-flat *::before,body.exporting-flat *::after{background-image:none!important}
 body.exporting-flat .tbl thead th,body.exporting-flat .card__label,
 body.exporting-flat .cover__year,body.exporting-flat .planner .vslot{background-color:#9b2851!important;color:#fff!important}
@@ -430,13 +411,20 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
 .pdf-echo{background-color:transparent}
 </style>
 </head>
-<body><!-- Écran de connexion Google -->
+<body>
+
+  <!-- Écran de restriction Firebase -->
   <div id="zone-connexion" style="text-align: center; padding: 60px 20px; font-family: sans-serif; min-height: 80vh;">
-    <h2>Accès restreint — Cahier Journal</h2>
-    <p style="margin-bottom: 24px; color: #555;">Veuillez vous connecter avec votre compte Google pour accéder au document.</p>
-    <button onclick="connexionGoogle()" style="padding: 12px 24px; font-size: 16px; font-weight: bold; cursor: pointer; background-color: #4285F4; color: white; border: none; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-      Se connecter avec Google
-    </button>
+    <h2>Accès restreint — Cahier Journal Numérique</h2>
+    <p style="margin-bottom: 24px; color: #555;">Veuillez saisir vos identifiants d'accès pour déverrouiller votre document.</p>
+    
+    <div style="max-width: 320px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px;">
+      <input type="email" id="user-email" placeholder="Adresse e-mail" style="padding: 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+      <input type="password" id="user-code" placeholder="Code d'accès" style="padding: 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;">
+      <button onclick="connexionFirebase()" style="padding: 12px 24px; font-size: 16px; font-weight: bold; cursor: pointer; background-color: #4285F4; color: white; border: none; border-radius: 6px;">
+        Se connecter
+      </button>
+    </div>
   </div>
 
   <!-- Début du Cahier Journal protégé -->
@@ -482,7 +470,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     <button class="tab" type="button" data-tab="13" onclick="showPage(13)"><i>13</i> Mois &amp; tâches</button>
     <button class="tab" type="button" data-tab="all" onclick="showPage('all')">Tout afficher</button>
   </nav>
-  <p class="hint">Chaque page possède, en haut à droite, un bouton <b>PDF</b> pour la télécharger individuellement (connexion internet requise la première fois). Pour tout le cahier en une fois, utilisez <b>Imprimer le cahier</b> : choisissez <b>A4</b>, marges <b>Aucune</b>, et cochez <b>Graphiques d'arrière-plan</b>, puis « Enregistrer au format PDF ». Les pages qui se dupliquent (cahier de textes, fiche de séance, liste des élèves, planification, <b>évaluation continue</b>, <b>conseil de classe</b> et <b>calendrier mensuel</b>) portent aussi un bouton <b>Dupliquer</b> en haut à droite. La saisie est conservée dans le navigateur.</p>
+  <p class="hint">Chaque page possède, en haut à droite, un bouton <b>PDF</b> pour la télécharger individuellement. Pour tout le cahier en une fois, utilisez <b>Imprimer le cahier</b> : choisissez <b>A4</b>, marges <b>Aucune</b>, et cochez <b>Graphiques d'arrière-plan</b>. La saisie est conservée dans le navigateur.</p>
 </header>
 
 <main id="cahier">
@@ -506,27 +494,21 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     <div class="halo" aria-hidden="true"></div>
     <svg class="eiffel" width="200" height="330" viewBox="0 0 200 330" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration de la Tour Eiffel">
       <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-        <!-- antenne + sommet -->
         <line x1="100" y1="10" x2="100" y2="34"/>
         <path d="M94 34h12"/>
         <path d="M95 34c-1 20-2 34-4 48"/>
         <path d="M105 34c1 20 2 34 4 48"/>
         <path d="M89 82h22"/>
-        <!-- fût médian -->
         <path d="M91 82c-3 26-6 44-9 60"/>
         <path d="M109 82c3 26 6 44 9 60"/>
         <path d="M80 142h40"/>
-        <!-- section basse -->
         <path d="M82 142c-4 24-8 44-13 64"/>
         <path d="M118 142c4 24 8 44 13 64"/>
         <path d="M67 206h66"/>
-        <!-- jambes -->
         <path d="M69 206c-7 34-20 66-39 96"/>
         <path d="M131 206c7 34 20 66 39 96"/>
         <path d="M55 254h90"/>
-        <!-- arche -->
         <path d="M62 302c4-40 72-40 76 0" stroke-width="2"/>
-        <!-- sol -->
         <path d="M22 302h156" stroke-width="2.6"/>
       </g>
       <g fill="none" stroke="currentColor" stroke-width="1" opacity=".45">
@@ -700,7 +682,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     </table>
   </div>
 
-  <p class="note" style="margin-top:4mm">Indiquer pour chaque créneau : la classe, la salle et, le cas échéant, l'activité prévue (compréhension de l'oral, compréhension de l'écrit, points de langue, production écrite, remédiation).</p>
+  <p class="note" style="margin-top:4mm">Indiquer pour chaque créneau : la classe, la salle et, le cas échéant, l'activité prévue.</p>
 
   <div class="signs">
     <div class="sign"><p>Enseignant(e)</p><div></div></div>
@@ -734,7 +716,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     </table>
   </div>
 
-  <p class="note" style="margin-top:3mm">Dernière ligne : rappel des classes prises en charge (niveau, filière et effectif) — utile pour la préparation et le suivi des séances.</p>
+  <p class="note" style="margin-top:3mm">Dernière ligne : rappel des classes prises en charge (niveau, filière et effectif).</p>
 
   <footer class="foot"><span>Cahier journal · Français</span><span>Semaine type</span><span>04</span></footer>
 </section>
@@ -895,7 +877,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
   </div>
 
   <div style="display:flex;align-items:flex-end;gap:5mm;margin-top:2.5mm">
-    <p class="note" style="flex:1">Moyenne = (évaluation continue + TP/expression orale + moyenne des devoirs + composition × 2) ÷ 5. L'appréciation s'affiche automatiquement ; moyenne et observation restent modifiables et vos saisies sont conservées.</p>
+    <p class="note" style="flex:1">Moyenne = (évaluation continue + TP/expression orale + moyenne des devoirs + composition × 2) ÷ 5.</p>
     <div class="field" style="width:24mm"><label for="l_g">Garçons :</label><input class="line line--c" type="text" id="l_g"></div>
     <div class="field" style="width:22mm"><label for="l_f">Filles :</label><input class="line line--c" type="text" id="l_f"></div>
     <div class="field" style="width:42mm"><label for="l_moy">Moyenne de la classe :</label><input class="line line--c" type="text" id="l_moy"></div>
@@ -1144,7 +1126,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
   </div>
 
   <div style="display:flex;align-items:flex-end;gap:5mm;margin-top:2.5mm">
-    <p class="note" style="flex:1">Note continue = (P + D + E + I × 2 + T + C) ÷ 7, calculée sur les colonnes renseignées. Elle reste modifiable : votre saisie remplace alors le calcul.</p>
+    <p class="note" style="flex:1">Note continue = (P + D + E + I × 2 + T + C) ÷ 7, calculée sur les colonnes renseignées.</p>
     <div class="field" style="width:30mm"><label for="ev_moy_cl">Moyenne classe :</label><input class="line line--c" type="text" id="ev_moy_cl"></div>
     <div class="field" style="width:26mm"><label for="ev_sup">Élèves ≥ 10 :</label><input class="line line--c" type="text" id="ev_sup"></div>
     <div class="field" style="width:52mm"><label for="ev_rem">Remédiation prévue :</label><input class="line" type="text" id="ev_rem"></div>
@@ -1248,7 +1230,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     <label for="cal_an">Année
       <select id="cal_an" data-cal="an"></select>
     </label>
-    <span class="note">Le calendrier se met à jour tout seul. Dupliquez la page pour obtenir chaque mois de l'année ; ce bandeau ne s'imprime pas.</span>
+    <span class="note">Le calendrier se met à jour tout seul.</span>
   </div>
 
   <div class="cal-layout">
@@ -1284,17 +1266,10 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
 <script>
 /* =====================================================================
    Cahier journal — logique de l'application
-   1. Construction des tableaux répétitifs
-   2. Navigation entre les pages
-   3. Sauvegarde locale (avec repli en mémoire si le stockage est bloqué)
-   4. Impression A4 / export PDF
-   5. Duplication de page
-   6. Papillons et nœud papillon (page de garde)
    ===================================================================== */
 (function () {
   'use strict';
 
-  /* ---------- fabriques d'éléments ---------- */
   function input(id, cls, val) {
     var e = document.createElement('input');
     e.type = 'text'; e.className = 'line' + (cls ? ' ' + cls : ''); e.id = id;
@@ -1336,10 +1311,8 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
   }
   function byId(id) { return document.getElementById(id); }
 
-  /* ---------- 1. tableaux ---------- */
   var DAYS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi'];
 
-  // Page 2 — grille jours x créneaux
   (function () {
     var tb = byId('edt-body'); if (!tb) return;
     DAYS.forEach(function (d, i) {
@@ -1349,7 +1322,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     });
   })();
 
-  // Page 3 — créneaux en lignes
   (function () {
     var tb = byId('tab-body'); if (!tb) return;
     var slots = ['08:00|09:00', '09:00|10:00', '10:00|11:00', '11:00|12:00', '13:00|14:00', '14:00|15:00', '15:00|16:00'];
@@ -1368,7 +1340,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     });
   })();
 
-  // Page 4 — planner hebdomadaire
   (function () {
     var tb = byId('planner-body'); if (!tb) return;
     var slots = ['8h - 9h', '9h - 10h', '10h - 11h', '11h - 12h', '13h - 14h', '14h - 15h', '15h - 16h', '16h - 17h'];
@@ -1391,7 +1362,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     }
   })();
 
-  // Page 5 — vacances / jours fériés
   (function () {
     var tb = byId('vac-body'); if (!tb) return;
     ['Vacances d\'automne', 'Vacances d\'hiver', 'Vacances de printemps', 'Vacances d\'été'].forEach(function (v, i) {
@@ -1411,7 +1381,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     }
   })();
 
-  // Page 6 — séminaires / journées pédagogiques
   (function () {
     var tb = byId('sem-body'); if (!tb) return;
     for (var i = 1; i <= 4; i++) {
@@ -1433,7 +1402,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     }
   })();
 
-  // Page 7 — cahier de textes
   (function () {
     var tb = byId('work-body'); if (!tb) return;
     for (var i = 1; i <= 12; i++) {
@@ -1446,7 +1414,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     }
   })();
 
-  // Page 8 — liste des élèves (36 lignes, moyenne calculée)
   (function () {
     var tb = byId('students-body'); if (!tb) return;
     for (var i = 1; i <= 36; i++) {
@@ -1470,10 +1437,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     }
   })();
 
-  /* ---------- moyenne trimestrielle & appréciation ---------- */
-  // Moyenne = (évaluation continue + TP/expression orale + moyenne des devoirs + composition x 2) / 5
-  // Tant que toutes les notes ne sont pas saisies, le calcul ne porte que sur
-  // les colonnes renseignées, avec les mêmes coefficients.
   var COEFS = { ec: 1, tp: 1, dev: 1, compo: 2 };
 
   function toNumber(v) {
@@ -1519,7 +1482,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     if (tr) computeRow(tr);
   });
 
-  // Page 9 — déroulement de la séance
   (function () {
     var tb = byId('phases-body'); if (!tb) return;
     var phases = [
@@ -1551,7 +1513,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     });
   })();
 
-  // Page 10 — planification hebdomadaire
   (function () {
     var tb = byId('plan-body'); if (!tb) return;
     for (var i = 1; i <= 10; i++) {
@@ -1564,7 +1525,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     }
   })();
 
-  // Page 11 — évaluation continue (28 lignes, note continue calculée)
   var EV_ROLES = ['part', 'dev', 'exo', 'int', 'cah', 'com'];
   (function () {
     var tb = byId('eval-body'); if (!tb) return;
@@ -1585,8 +1545,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     }
   })();
 
-  /* ---------- note d'évaluation continue ---------- */
-  // Note continue = (P + D + E + I x 2 + T + C) / 7, sur les colonnes renseignées.
   var EV_COEFS = { part: 1, dev: 1, exo: 1, int: 2, cah: 1, com: 1 };
 
   function computeEvalRow(tr) {
@@ -1611,7 +1569,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     if (tr) computeEvalRow(tr);
   });
 
-  // Page 12 — conseil de classe
   (function () {
     var tb = byId('cc-body'); if (!tb) return;
     var membres = [
@@ -1647,7 +1604,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     });
   })();
 
-  // Page 13 — calendrier du mois & tâches
   var MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
               'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 
@@ -1664,7 +1620,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     var m = parseInt(selM.value, 10);
     var y = parseInt(selA.value, 10);
     if (isNaN(m) || isNaN(y)) return;
-    var premier = new Date(y, m, 1).getDay();      // 0 = dimanche
+    var premier = new Date(y, m, 1).getDay();
     var nbJours = new Date(y, m + 1, 0).getDate();
     var html = '', jour = 1;
     for (var r = 0; r < 6; r++) {
@@ -1720,8 +1676,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     renderCalendar(sheet);
   })();
 
-  // Le mois et l'année sont des listes déroulantes : on redessine à chaque
-  // changement, y compris sur les pages dupliquées (écoute déléguée).
   document.addEventListener('change', function (e) {
     if (e.target.getAttribute && e.target.getAttribute('data-cal')) {
       var sh = e.target.closest('.sheet');
@@ -1729,7 +1683,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     }
   });
 
-  /* ---------- 2. navigation ---------- */
   var current = 0;
   window.showPage = function (n) {
     current = n;
@@ -1742,7 +1695,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  /* ---------- 3. sauvegarde ---------- */
   var KEY = 'cahier_journal_fr_v1';
   var memory = null;
   function readStore() {
@@ -1775,7 +1727,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
       (data.__manuel || []).forEach(function (id) {
         var el = byId(id); if (el) el.setAttribute('data-manual', '1');
       });
-    } catch (e) { /* données illisibles : on repart d'un cahier vierge */ }
+    } catch (e) { }
   }
   function setVal(id, v) {
     var el = byId(id); if (!el) return;
@@ -1803,7 +1755,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     if (e.target.type === 'checkbox' || e.target.tagName === 'SELECT') window.saveAll(true);
   });
 
-  /* ---------- 4. impression ---------- */
   function markFirst() {
     var sheets = document.querySelectorAll('.sheet');
     sheets.forEach(function (s) { s.classList.remove('is-first'); });
@@ -1816,9 +1767,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     setTimeout(function () { markFirst(); window.print(); }, 250);
   };
 
-  /* ---------- 4 bis. export PDF ---------- */
-  // html2canvas ne lit pas la valeur « vivante » des champs : on la recopie
-  // dans le DOM (attribut value / contenu textuel) avant la capture.
   function syncFields(root) {
     root.querySelectorAll('textarea').forEach(function (t) { t.textContent = t.value; });
     root.querySelectorAll('input[type="text"], input[type="email"]').forEach(function (i) {
@@ -1829,9 +1777,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     });
   }
 
-  // Le convertisseur ne dessine pas le contenu vivant des champs (l'année
-  // scolaire de la page de garde disparaissait). On remplace donc chaque champ
-  // par du texte figé, aux mêmes dimensions, le temps de la capture.
   var fieldSwaps = [];
   function freezeFields(root) {
     root.querySelectorAll('input, textarea').forEach(function (el) {
@@ -1902,10 +1847,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     fieldSwaps = [];
   }
 
-  // --- dessins vectoriels ------------------------------------------------
-  // Le convertisseur PDF gère mal les <svg> intégrés (erreur « Unsupported
-  // image type »). On les transforme donc nous-mêmes en images PNG le temps
-  // de la conversion, puis on remet les dessins d'origine.
   var svgSwaps = [];
 
   function rasterizeSvg(svg) {
@@ -1917,7 +1858,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
       clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
       clone.setAttribute('width', w);
       clone.setAttribute('height', h);
-      // « currentColor » est perdu hors du document : on fige les couleurs.
       clone.style.color = window.getComputedStyle(svg).color;
       var source = svg.querySelectorAll('[class]');
       var target = clone.querySelectorAll('[class]');
@@ -1952,7 +1892,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
         svg.style.display = 'none';
         svgSwaps.push({ svg: svg, img: img });
       })['catch'](function (e) {
-        // Dessin non convertible : on le masque pour ne pas bloquer l'export.
         console.warn('Dessin ignoré dans le PDF', e);
         svg.style.display = 'none';
         svgSwaps.push({ svg: svg, img: null });
@@ -1982,9 +1921,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     };
   }
 
-  // Export d'une seule page (celle du bouton cliqué), via le pipeline
-  // intégré de html2pdf.js (html2canvas + jsPDF + téléchargement en un
-  // seul appel .save() — plus fiable que la manipulation manuelle de jsPDF).
   window.downloadPageAsPDF = function (btn) {
     var sheet = btn.closest('.sheet');
     if (!sheet) return;
@@ -2007,11 +1943,11 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     function fail(err) {
       console.error('Export PDF —', err);
       var detail = err && (err.message || err.name) ? ' (' + String(err.message || err.name).slice(0, 70) + ')' : '';
-      stop('Échec de la génération' + detail + '. Utilisez « Imprimer cette page » puis « Enregistrer au format PDF » : le résultat est même plus net.', true);
+      stop('Échec de la génération' + detail + '. Utilisez « Imprimer cette page » puis « Enregistrer au format PDF ».', true);
     }
 
     if (typeof html2pdf === 'undefined') {
-      stop('Générateur PDF non chargé : vérifiez la connexion internet puis rechargez la page. Sinon, utilisez « Imprimer cette page ».', true);
+      stop('Générateur PDF non chargé : vérifiez la connexion internet.', true);
       return;
     }
 
@@ -2023,9 +1959,8 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     document.body.classList.add('exporting');
     btn.disabled = true; btn.textContent = '…';
 
-    // Quoi qu'il arrive, la page redevient utilisable.
     guard = setTimeout(function () {
-      stop('La génération a été interrompue au bout de 30 secondes ; le cahier redevient utilisable. Essayez « Imprimer cette page » puis « Enregistrer au format PDF ».', true);
+      stop('La génération a été interrompue au bout de 30 secondes.', true);
     }, 30000);
 
     var titre = (sheet.getAttribute('aria-label') || 'page').trim();
@@ -2047,7 +1982,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
       ['catch'](function (err) { fail(err); });
   };
 
-  /* ---------- 4 ter. bouton PDF sur chaque page ---------- */
   function pdfButtonHTML() {
     return '<button class="btn btn--pdf" type="button" onclick="downloadPageAsPDF(this)" title="Télécharger cette page en PDF">⬇ PDF</button>';
   }
@@ -2065,7 +1999,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     });
   }
 
-  /* ---------- 5. duplication de page ---------- */
   var clones = 0;
   window.duplicatePage = function (btn) {
     var src = btn.closest('.sheet');
@@ -2096,7 +2029,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     toast('Page supprimée.');
   };
 
-  /* ---------- notifications ---------- */
   var toastTimer = null;
   function toast(msg, longue) {
     var t = byId('toast');
@@ -2106,8 +2038,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     toastTimer = setTimeout(function () { t.classList.remove('is-on'); }, longue ? 9000 : 2600);
   }
 
-  /* ---------- 6. papillons & nœud papillon ---------- */
-  // Dessins générés en SVG — palette "Parisian Chic" (or chaud + prune/rose)
   var C = {
     gold: '#c49a45', goldDeep: '#8f6a24',
     rose: '#d65582', roseDeep: '#7a2342',
@@ -2131,7 +2061,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
       '</g></svg>';
   }
 
-  // Nœud papillon (ruban) — accent chic exclusif à la page de garde
   function bowHTML() {
     return '<svg class="orn orn--bow" viewBox="0 0 140 88" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
       '<g stroke="' + C.bowLine + '" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">' +
@@ -2154,7 +2083,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     });
   }
 
-  /* ---------- exemple de remplissage ---------- */
   window.fillModel = function () {
     var m = {
       c_ens: 'Mme BENALI Souad', c_etab: 'Lycée Ibn Khaldoun', c_com: 'El Biar', c_wil: 'Alger',
@@ -2168,7 +2096,7 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
       i_form: 'ENS de Bouzaréah, Alger', i_annee: '2026 - 2027', i_horaire: '18 h / semaine',
       i_acc_nom: 'M. KHALDI Sofiane', i_acc_fonc: 'Professeur formateur', i_acc_tel: '05 50 12 34 56',
       i_insp: 'M. LAMRI Kamel', i_coord: 'Mme SAADI Nadia',
-      i_obs: 'Animation de l\'atelier d\'écriture et du club de lecture. Intégration des TICE en compréhension de l\'oral.',
+      i_obs: 'Animation de l\'atelier d\'écriture et du club de lecture.',
       e_etab: 'Lycée Ibn Khaldoun', e_annee: '2026 - 2027', e_ens: 'Mme BENALI Souad', e_classes: '3AS SE · 2AS L&Ph · 1AS TC L',
       edt_0_1: '3AS SE — S08', edt_0_2: '2AS L&Ph — S12', edt_0_3: '1AS TC L — S04', edt_1_1: '3AS SE — S08',
       t_etab: 'Lycée Ibn Khaldoun', t_ens: 'Mme BENALI Souad', t_dir: 'M. HAMDI Rachid',
@@ -2181,16 +2109,16 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
       fer_1_date: '01/11/2026', fer_1_jour: 'Dimanche', fer_1_nom: 'Fête de la Révolution', fer_1_obs: 'Exposé : le texte d\'histoire',
       v_c1: 'Du 29/11/2026 au 03/12/2026', v_c2: 'Du 28/02/2027 au 04/03/2027',
       v_c3: 'Du 16/05/2027 au 20/05/2027', v_bac: 'Baccalauréat blanc : mars 2027',
-      sem_1_date: '12/10/2026', sem_1_theme: 'L\'approche par compétences et l\'exploitation du texte d\'histoire en 3AS',
+      sem_1_date: '12/10/2026', sem_1_theme: 'L\'approche par compétences en 3AS',
       sem_1_org: 'Inspection de la circonscription', sem_1_lieu: 'Lycée H. Ben Bouali', sem_1_duree: '1 journée',
-      sem_1_pts: 'Exploitation didactique de l\'archive. Formulation d\'objectifs opérationnels. Compte rendu objectif.',
-      sem_1_reinv: 'Grille de compte rendu appliquée en 3AS dès la séquence 1.',
-      jp_1_date: '05/10/2026', jp_1_lieu: 'Lycée Ibn Khaldoun', jp_1_theme: 'Harmonisation des progressions et du barème de la production écrite',
+      sem_1_pts: 'Exploitation didactique de l\'archive. Compte rendu objectif.',
+      sem_1_reinv: 'Grille de compte rendu appliquée en 3AS.',
+      jp_1_date: '05/10/2026', jp_1_lieu: 'Lycée Ibn Khaldoun', jp_1_theme: 'Harmonisation des barèmes',
       w_classe: '3AS SE · 2AS L&Ph', w_periode: 'Semaine du 20 au 24/09/2026', w_trim: '1er trimestre',
       w_1_date: '20/09/2026', w_1_classe: '3AS SE', w_1_heure: '08:00 - 09:00',
-      w_1_travail: 'Évaluation diagnostique : lecture d\'un texte informatif à visée explicative.', w_1_obs: 'Acquis satisfaisants.',
+      w_1_travail: 'Évaluation diagnostique : texte informatif.', w_1_obs: 'Acquis satisfaisants.',
       w_2_date: '20/09/2026', w_2_classe: '2AS L&Ph', w_2_heure: '09:00 - 10:00',
-      w_2_travail: 'Projet 1 / séquence 1 : lancement — compréhension de l\'oral (discours exhortatif).', w_2_obs: 'Participation active.',
+      w_2_travail: 'Projet 1 / séquence 1 : compréhension de l\'oral.', w_2_obs: 'Participation active.',
       l_classe: '3AS SE 1', l_niveau: '3AS Sciences expérimentales', l_eff: '35', l_annee: '2026 - 2027',
       l_trim: '1er trimestre', l_del: 'AMRANI Yacine', l_g: '16', l_f: '19', l_moy: '12,45',
       el_1_nom: 'AMRANI Yacine', el_1_naiss: '12/03/2009', el_1_sexe: 'M',
@@ -2198,54 +2126,54 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
       el_2_nom: 'BELKACEM Lina', el_2_naiss: '05/07/2009', el_2_sexe: 'F',
       el_2_ec: '15', el_2_tp: '16', el_2_dev: '14,5', el_2_compo: '15,5',
       f_num: '01', f_date: '22/09/2026', f_classe: '3AS Sciences expérimentales', f_duree: '1 h',
-      f_projet: 'Projet 1 : réaliser un dossier documentaire pour informer d\'un fait d\'histoire.',
+      f_projet: 'Projet 1 : dossier documentaire sur un fait d\'histoire.',
       f_sequence: 'Séquence 1 : informer d\'un fait d\'histoire.', f_objet: 'Le texte d\'histoire',
-      f_comp: 'Comprendre et analyser un texte d\'histoire pour en restituer l\'essentiel.',
-      f_savoir: 'La structure et la visée informative du texte d\'histoire.',
-      f_sf: 'Repérer les marques de l\'objectivité et distinguer le fait du témoignage.',
-      f_se: 'Développer un esprit critique face aux sources historiques.',
+      f_comp: 'Comprendre et analyser un texte d\'histoire.',
+      f_savoir: 'Structure du texte d\'histoire.',
+      f_sf: 'Repérer les marques de l\'objectivité.',
+      f_se: 'Esprit critique.',
       f_s_page: '14-16',
-      f_cr1: 'L\'élève identifie la visée informative du texte.',
-      f_cr2: 'L\'élève distingue le fait historique du témoignage.',
-      f_cr3: 'L\'élève reformule l\'idée générale en une phrase correcte.',
-      f_diff: 'Guidage de la lecture silencieuse pour les élèves en difficulté ; recherche complémentaire pour les plus avancés.',
-      f_bilan: 'Bonne participation ; la distinction fait / témoignage demande une séance de consolidation.',
-      ph_0_act: 'Observation de l\'image d\'archive et de la date pour formuler des hypothèses de sens.',
-      ph_1_act: 'Lecture silencieuse puis magistrale ; repérage des indicateurs de temps et des acteurs.',
-      ph_2_act: 'Analyse des paragraphes : faits historiques / commentaires de l\'auteur.',
-      ph_3_act: 'Élaboration collective du plan du texte et prise de notes.',
-      ph_4_act: 'Question de synthèse écrite : restituer l\'essentiel en trois phrases.',
+      f_cr1: 'L\'élève identifie la visée informative.',
+      f_cr2: 'L\'élève distingue le fait du témoignage.',
+      f_cr3: 'L\'élève reformule l\'idée générale.',
+      f_diff: 'Guidage de la lecture pour les élèves en difficulté.',
+      f_bilan: 'Bonne participation.',
+      ph_0_act: 'Observation de l\'image d\'archive.',
+      ph_1_act: 'Lecture silencieuse puis magistrale.',
+      ph_2_act: 'Analyse des faits / commentaires.',
+      ph_3_act: 'Trace écrite.',
+      ph_4_act: 'Question de synthèse.',
       p_semaine: '20 au 24 septembre 2026', p_trim: '1er trimestre',
-      p_projet: 'Projet 1 : dossier documentaire sur un fait d\'histoire.',
+      p_projet: 'Projet 1 : dossier documentaire.',
       p_seq: 'Séquence 1 : informer d\'un fait d\'histoire.',
-      p_obj: 'Restituer l\'essentiel d\'un texte d\'histoire sous forme de compte rendu objectif.',
+      p_obj: 'Restituer l\'essentiel d\'un texte d\'histoire.',
       pn_1_jour: 'Dim. 20/09', pn_1_classe: '3AS SE', pn_1_act: 'Évaluation diagnostique',
-      pn_1_contenu: 'Texte informatif à visée explicative — manuel p. 12', pn_1_devoir: 'Relever le lexique de l\'histoire',
+      pn_1_contenu: 'Texte informatif — manuel p. 12', pn_1_devoir: 'Lexique de l\'histoire',
       pn_2_jour: 'Mar. 22/09', pn_2_classe: '3AS SE', pn_2_act: 'Compréhension de l\'écrit',
-      pn_2_contenu: 'Le texte d\'histoire — extrait d\'ouvrage historique', pn_2_devoir: 'Plan du texte à recopier',
-      p_bilan: 'Séquence 1 lancée dans les trois niveaux ; compréhension de l\'oral reportée en 1AS.',
-      p_report: 'Séance de points de langue (1AS) à rattraper le mercredi 30/09.',
+      pn_2_contenu: 'Le texte d\'histoire', pn_2_devoir: 'Plan du texte',
+      p_bilan: 'Séquence 1 lancée.',
+      p_report: 'Rattrapage prévu.',
       ev_classe: '3AS SE 1', ev_niveau: '3AS Sciences expérimentales', ev_trim: '1er trimestre', ev_annee: '2026 - 2027',
-      ev_projet: 'Projet 1 / séquence 1 : informer d\'un fait d\'histoire.',
+      ev_projet: 'Projet 1 / séquence 1.',
       ev_periode: 'Du 20/09 au 30/10/2026',
       ev_1_nom: 'AMRANI Yacine', ev_1_part: '13', ev_1_dev: '12', ev_1_exo: '14', ev_1_int: '12,5', ev_1_cah: '15', ev_1_com: '16',
-      ev_1_obs: 'Prend la parole plus souvent ; devoirs à rendre à temps.',
+      ev_1_obs: 'Prend la parole plus souvent.',
       ev_2_nom: 'BELKACEM Lina', ev_2_part: '16', ev_2_dev: '15', ev_2_exo: '15,5', ev_2_int: '15', ev_2_cah: '17', ev_2_com: '18',
-      ev_2_obs: 'Progrès nets à l\'oral ; cahier très soigné.',
-      ev_moy_cl: '12,80', ev_sup: '22 / 35', ev_rem: 'Atelier de compte rendu, mercredi 8 h - 9 h.',
+      ev_2_obs: 'Progrès nets.',
+      ev_moy_cl: '12,80', ev_sup: '22 / 35', ev_rem: 'Atelier de compte rendu.',
       cc_classe: '3AS SE 1', cc_niveau: '3AS Sciences expérimentales', cc_eff: '35', cc_trim: '1er trimestre',
       cc_date: '07/12/2026', cc_heure: '14:00 - 16:00', cc_lieu: 'Salle des professeurs',
       cc_pres: 'M. HAMDI Rachid', cc_pp: 'Mme BENALI Souad',
-      cc_ordre: 'Bilan du 1er trimestre, résultats par matière, décisions et mesures de remédiation.',
+      cc_ordre: 'Bilan du 1er trimestre.',
       cc_m_0_nom: 'M. HAMDI Rachid', cc_m_1_nom: 'Mme ZERROUKI Amel', cc_m_2_nom: 'Mme BENALI Souad',
       cc_m_3_nom: 'Mme BENALI Souad', cc_m_4_nom: 'AMRANI Yacine', cc_m_5_nom: 'M. TALEB Djamel',
-      cc_m_4_obs: 'Signale la surcharge des devoirs le lundi.',
+      cc_m_4_obs: 'Remarques des élèves.',
       cc_moy: '12,45', cc_max: '17,25', cc_min: '06,50', cc_sup: '23', cc_inf: '12', cc_taux: '65,7 %',
       cc_d_0_eleves: 'BELKACEM Lina, MEZIANE Sarah', cc_d_0_nb: '02',
-      cc_d_1_eleves: 'AMRANI Yacine, HADDAD Rym, SAHLI Nour', cc_d_1_nb: '03',
+      cc_d_1_eleves: 'AMRANI Yacine, HADDAD Rym', cc_d_1_nb: '02',
       cc_d_3_eleves: 'BOUZID Karim', cc_d_3_nb: '01',
-      cc_diff: 'Lexique de l\'histoire mal maîtrisé ; compte rendu objectif encore proche de la paraphrase.',
-      cc_reco: 'Séances de remédiation le mercredi, contrat de travail individuel pour les élèves sous la moyenne, information des parents.'
+      cc_diff: 'Compte rendu proche de la paraphrase.',
+      cc_reco: 'Remédiation le mercredi.'
     };
     Object.keys(m).forEach(function (k) { setVal(k, m[k]); });
     recalcAll();
@@ -2265,7 +2193,6 @@ body.exporting-flat .card,body.exporting-flat .cover{background-color:#fff!impor
     });
   }
 
-  /* ---------- démarrage ---------- */
   restore();
   recalcAll();
   renderAllCalendars();
